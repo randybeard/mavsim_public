@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+<<<<<<< HEAD
+    <list default="true" id="67b6d62a-1cda-4828-b5b9-c4905daad042" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+=======
+    <list default="true" id="dfd1fae0-9223-4276-a3e0-31c1727dff95" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../mavsim_matlab/chap12/mavsim_chap12.m" beforeDir="false" afterPath="$PROJECT_DIR$/../mavsim_matlab/chap12/mavsim_chap12.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mavsim_matlab/chap12/rrt_dubins.m" beforeDir="false" afterPath="$PROJECT_DIR$/../mavsim_matlab/chap12/rrt_dubins.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mavsim_matlab/parameters/simulation_parameters.m" beforeDir="false" afterPath="$PROJECT_DIR$/../mavsim_matlab/parameters/simulation_parameters.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mavsim_simulink/chap12/path_planner.m" beforeDir="false" afterPath="$PROJECT_DIR$/../mavsim_simulink/chap12/path_planner.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mavsim_simulink/chap12/planRRTDubins.m" beforeDir="false" afterPath="$PROJECT_DIR$/../mavsim_simulink/chap12/planRRTDubins.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mavsim_simulink/parameters/planner_parameters.m" beforeDir="false" afterPath="$PROJECT_DIR$/../mavsim_simulink/parameters/planner_parameters.m" afterDir="false" />
+>>>>>>> a32f80dd1958c7d85d4b47c59166102ba85ef3cd
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+<<<<<<< HEAD
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="583" />
+    <option name="y" value="205" />
+    <option name="width" value="2011" />
+    <option name="height" value="1146" />
+  </component>
+  <component name="ProjectId" id="1n4rKf5bOvRlZ2zAcoeh812jLOl" />
+=======
+  <component name="FavoritesManager">
+    <favorites_list name="mavsim_python" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1ZXF9iUH9AMQNVTzWDJZIWMDqJ3" />
+>>>>>>> a32f80dd1958c7d85d4b47c59166102ba85ef3cd
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings module-name="mavsimpy" is-module-sdk="true">
+        <option name="myUseModuleSdk" value="true" />
+        <option name="myModuleName" value="mavsimpy" />
+      </console-settings>
+    </option>
+  </component>
+<<<<<<< HEAD
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+=======
+  <component name="RunManager" selected="Python.transfer_function">
+    <configuration name="mavsim_chap10" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="mavsimpy" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/chap10" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/chap10/mavsim_chap10.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="mavsim_chap11" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="mavsimpy" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/chap11" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/chap11/mavsim_chap11.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="mavsim_chap12" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="mavsimpy" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/chap12" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/chap12/mavsim_chap12.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="mavsim_chap8" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="mavsimpy" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/chap8" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/chap8/mavsim_chap8.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="transfer_function" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="mavsimpy" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tools" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tools/transfer_function.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.transfer_function" />
+        <item itemvalue="Python.mavsim_chap12" />
+        <item itemvalue="Python.mavsim_chap11" />
+        <item itemvalue="Python.mavsim_chap10" />
+        <item itemvalue="Python.mavsim_chap8" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="project-level" UseSingleDictionary="true" transferred="true" />
+>>>>>>> a32f80dd1958c7d85d4b47c59166102ba85ef3cd
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="dfd1fae0-9223-4276-a3e0-31c1727dff95" name="Default Changelist" comment="" />
+      <created>1546381465299</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1546381465299</updated>
+    </task>
+    <servers />
+  </component>
+<<<<<<< HEAD
+=======
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="WindowStateProjectService">
+    <state width="1565" height="475" key="GridCell.Tab.0.bottom" timestamp="1605912606891">
+      <screen x="0" y="23" width="2560" height="1417" />
+    </state>
+    <state width="1565" height="475" key="GridCell.Tab.0.bottom/2560.1180.1440.900/0.23.2560.1417@0.23.2560.1417" timestamp="1605912606891" />
+    <state width="1565" height="475" key="GridCell.Tab.0.center" timestamp="1605912606890">
+      <screen x="0" y="23" width="2560" height="1417" />
+    </state>
+    <state width="1565" height="475" key="GridCell.Tab.0.center/2560.1180.1440.900/0.23.2560.1417@0.23.2560.1417" timestamp="1605912606890" />
+    <state width="1565" height="475" key="GridCell.Tab.0.left" timestamp="1605912606884">
+      <screen x="0" y="23" width="2560" height="1417" />
+    </state>
+    <state width="1565" height="475" key="GridCell.Tab.0.left/2560.1180.1440.900/0.23.2560.1417@0.23.2560.1417" timestamp="1605912606884" />
+    <state width="1565" height="475" key="GridCell.Tab.0.right" timestamp="1605912606890">
+      <screen x="0" y="23" width="2560" height="1417" />
+    </state>
+    <state width="1565" height="475" key="GridCell.Tab.0.right/2560.1180.1440.900/0.23.2560.1417@0.23.2560.1417" timestamp="1605912606890" />
+    <state x="934" y="566" key="com.intellij.ide.util.TipDialog" timestamp="1600293973826">
+      <screen x="0" y="23" width="2560" height="1417" />
+    </state>
+    <state x="934" y="566" key="com.intellij.ide.util.TipDialog/0.23.2560.1417@0.23.2560.1417" timestamp="1600293973826" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/chap8/observer2.py</url>
+          <line>85</line>
+          <option name="timeStamp" value="48" />
+        </line-breakpoint>
+      </breakpoints>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+    </breakpoint-manager>
+  </component>
+>>>>>>> a32f80dd1958c7d85d4b47c59166102ba85ef3cd
+</project>
