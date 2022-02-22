@@ -2,7 +2,7 @@
 
 ![Bookcover](./bookcover.jpg)
 
-[Randy Beard](http://www.ee.byu.edu/faculty/beard/), 
+[Randy Beard](https://ece.byu.edu/directory/randy-beard), 
 [Tim McLain](http://me.byu.edu/faculty/timmclain)
 
 [Princeton University Press, 2012](http://press.princeton.edu/titles/9632.html)
@@ -23,7 +23,7 @@ The following lecture materials are included as a resource for instructors.  The
 | Chapter 5 - Linear Design Models | [chap5.pdf](https://drive.google.com/file/d/1BRS8PaOMrFdotGgb7oXOZloANh3fzUAo/view?usp=sharing) | [chap5.pptx](https://docs.google.com/presentation/d/1BfpnwWnK5A31pZdNu3rZ48Nu3AefLnfk/edit?usp=sharing&ouid=115325376918178448854&rtpof=true&sd=true)  | 2/10/2022 |
 | Chapter 6 - Autopilot Design | [chap6.pdf](https://drive.google.com/file/d/1BfLD2KDyalXuANrA14RC29EWIw3xF4fU/view?usp=sharing) | [chap6.pptx](https://docs.google.com/presentation/d/1BPBHWl0PiHGs43uYlk_qiRLSvKXZrx9G/edit?usp=sharing&ouid=115325376918178448854&rtpof=true&sd=true)  | 2/10/2022 |
 | Chapter 7 - Sensors | [chap7.pdf](https://drive.google.com/file/d/1BMceIPDGzBda9w5R5LrNnouabS8lQ9s_/view?usp=sharing) | [chap7.pptx](https://docs.google.com/presentation/d/1BRVcewET8_s5urj7NmXIDZUsrej0kvDw/edit?usp=sharing&ouid=115325376918178448854&rtpof=true&sd=true)  | 2/14/2022 |
-| Chapter 8 - State Estimation | [chap8.pdf](https://drive.google.com/file/d/1BSbH_F7KbP4tnSOwurSScwoVGsrTmHpg/view?usp=sharing) | [chap8.pptx](https://docs.google.com/presentation/d/1BSgBhzfr4RhCdZn-HX4v3pY1bCLp5YC0/edit?usp=sharing&ouid=115325376918178448854&rtpof=true&sd=true)  | 2/28/2020 |
+| Chapter 8 - State Estimation | [chap8.pdf](https://drive.google.com/file/d/1BSbH_F7KbP4tnSOwurSScwoVGsrTmHpg/view?usp=sharing) | [chap8.pptx](https://docs.google.com/presentation/d/1BSgBhzfr4RhCdZn-HX4v3pY1bCLp5YC0/edit?usp=sharing&ouid=115325376918178448854&rtpof=true&sd=true)  | 2/27/2022 |
 | Chapter 9 - Nonlinear Design Models | [chap9.pdf](https://drive.google.com/file/d/1BelIP25e4QFLps4Rr49jyzP1maox328C/view?usp=sharing) | [chap9.pptx](https://docs.google.com/presentation/d/1BiQW_uHnIt9JfBFo4hMPqclEEbza7HVL/edit?usp=sharing&ouid=115325376918178448854&rtpof=true&sd=true)  | 11/4/2014 |
 | Chapter 10 - Waypoint and Orbit Following | [chap10.pdf](https://drive.google.com/file/d/1BLu3HMqT8-OW1ys-xyoZup_wtSX_v3bq/view?usp=sharing) | [chap10.pptx](https://docs.google.com/presentation/d/1BlvDyeswCp9vDKRio1R2Xm_2gpgNhTRH/edit?usp=sharing&ouid=115325376918178448854&rtpof=true&sd=true)  | 3/25/2020 |
 | Chapter 11 - Path Manager | [chap11.pdf](https://drive.google.com/file/d/1BhtShrqNmy14c7k_R0Ayn-kW8IyZ1Jc3/view?usp=sharing) | [chap11.pptx](https://docs.google.com/presentation/d/1BUhwTIXyWRpKR8hPGnqNi7Z8tHGEC3pY/edit?usp=sharing&ouid=115325376918178448854&rtpof=true&sd=true)  | 03/30/2020 |
