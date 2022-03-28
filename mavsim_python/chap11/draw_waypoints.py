@@ -61,20 +61,20 @@ class DrawWaypoints:
             theta_list = [th]
             if dubins_path.dir_s > 0:
                 if th1 >= th2:
-                    while th < th2 + 2*np.pi:
+                    while th < th2 + 2*np.pi - Del:
                         th += Del
                         theta_list.append(th)
                 else:
-                    while th < th2:
+                    while th < th2 - Del:
                         th += Del
                         theta_list.append(th)
             else:
                 if th1 <= th2:
-                    while th > th2 - 2*np.pi:
+                    while th > th2 - 2*np.pi + Del:
                         th -= Del
                         theta_list.append(th)
                 else:
-                    while th > th2:
+                    while th > th2 + Del:
                         th -= Del
                         theta_list.append(th)
 
@@ -109,20 +109,20 @@ class DrawWaypoints:
             theta_list = [th]
             if dubins_path.dir_e > 0:
                 if th1 >= th2:
-                    while th < th2 + 2 * np.pi:
+                    while th < th2 + 2 * np.pi - Del:
                         th += Del
                         theta_list.append(th)
                 else:
-                    while th < th2:
+                    while th < th2 - Del:
                         th += Del
                         theta_list.append(th)
             else:
                 if th1 <= th2:
-                    while th > th2 - 2 * np.pi:
+                    while th > th2 - 2 * np.pi + Del:
                         th -= Del
                         theta_list.append(th)
                 else:
-                    while th > th2:
+                    while th > th2 + Del:
                         th -= Del
                         theta_list.append(th)
             for angle in theta_list:
