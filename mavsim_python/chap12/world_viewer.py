@@ -7,27 +7,32 @@ mavsim_python: world viewer (for chapter 12)
 import sys
 sys.path.append("..")
 import numpy as np
-import pyqtgraph as pg
-import pyqtgraph.opengl as gl
 from chap2.draw_mav import DrawMav
 from chap10.draw_path import DrawPath
 from chap11.draw_waypoints import DrawWaypoints
 from chap12.draw_map import DrawMap
+import pyqtgraph as pg
+import pyqtgraph.opengl as gl
 
 
 class WorldViewer:
     def __init__(self):
-        self.scale = 4000
+        self.scale = 2500
         # initialize Qt gui application and window
         self.app = pg.QtGui.QApplication([])  # initialize QT
         self.window = gl.GLViewWidget()  # initialize the view object
         self.window.setWindowTitle('World Viewer')
-        self.window.setGeometry(0, 0, 1500, 1500)  # args: upper_left_x, upper_right_y, width, height
+        self.window.setGeometry(0, 0, 1000, 1000)  # args: upper_left_x, upper_right_y, width, height
         grid = gl.GLGridItem() # make a grid to represent the ground
         grid.scale(self.scale/20, self.scale/20, self.scale/20) # set the size of the grid (distance between each line)
         self.window.addItem(grid) # add grid to viewer
-        self.window.setCameraPosition(distance=self.scale, elevation=50, azimuth=-90)
+        center = self.window.cameraPosition()
+        center.setX(1000)
+        center.setY(1000)
+        center.setZ(0)
+        self.window.setCameraPosition(pos=center, distance=self.scale, elevation=50, azimuth=-90)
         self.window.setBackgroundColor('k')  # set background color to black
+        # self.window.resize(*(4000, 4000))  # not sure how to resize window
         self.window.show()  # display configured window
         self.window.raise_()  # bring window to the front
         self.plot_initialized = False  # has the mav been plotted yet?
