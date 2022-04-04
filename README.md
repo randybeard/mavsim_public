@@ -1,6 +1,6 @@
 # Small Unmanned Aircraft: Theory and Practice
 
-![Bookcover](./bookcover.jpg)
+<img src="./bookcover.jpg" width="100" />
 
 [Randy Beard](https://ece.byu.edu/directory/randy-beard), 
 [Tim McLain](http://me.byu.edu/faculty/timmclain)
