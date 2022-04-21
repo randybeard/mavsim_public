@@ -71,7 +71,6 @@ The Kalman filters presented in the book are meant to be tutorial and are intend
     * Mark Owen, Randal W. Beard, Timothy W. McLain, “Implementing Dubins Airplane Paths on Fixed-wing UAVs,” Handbook of Unmanned Aerial Vehicles, ed. Kimon P. Valavanis, George J. Vachtsevanos, Springer Verlag, Section XII, Chapter 68, p. 1677-1702, 2014. [Preprint.](https://drive.google.com/file/d/1BnRrIl1Kc7B674GPAv5yik1wrfCtStai/view?usp=sharing)
     * [Simulink files implementing Dubins airplane paths.](https://drive.google.com/file/d/1BzMnfsncxxOInVSVGpuugRqCjJBnSbmU/view?usp=sharing)  Run the Simulink file mavsim_dubins.slx.
 
-
 * **Feedforward term for Orbit Following**
     Orbit following can be improved by adding a feedforward term on the roll angle.   The description in the wind and no wind case are given here:
     * [UAVBook Supplement on Feedforward for Orbit Following.](https://drive.google.com/file/d/1BsqTqIOWB1MreGTr2WjwCplAdMXZx00Z/view?usp=sharing)
@@ -114,6 +113,16 @@ The Kalman filters presented in the book are meant to be tutorial and are intend
     **Brandon Forsgren, 2019**  [ROS/C++ implementation](https://github.com/b4sgren/mav_simulator)
     
     **Derek Knowles, 2019** [Path planning Voronoi graphs](https://github.com/betaBison/EC-EN-674-Flight-Dynamics-Controls/tree/master/project)
+    
+    **Easton Potokar, 2022** [Application to Underwater Vehicles](https://github.com/contagon/AUVControl)
+    
+    **Mason Peterson, 2022** [Quadplane Trajectory Tracker](https://github.com/mbpeterson70/quadplane_project)
+    
+    **Dan Richards, 2022** [Unit Tests on several chapters](https://github.com/dcrich/MAV-Unit-Tests)
+    
+    **John Morrell, 2022** [Eigenstructure Assignment](https://github.com/Tarnarmour/FlightDynamics_Eigenstructure/blob/main/README.md)
+    
+    
 
 
 
