@@ -77,17 +77,7 @@ class DrawMav:
             Define the points on the aircraft following diagram in Figure C.3
         """
         # define MAV body parameters
-        unit_length = 0.25
-        fuse_h = unit_length
-        fuse_w = unit_length
-        fuse_l1 = unit_length * 2
-        fuse_l2 = unit_length
-        fuse_l3 = unit_length * 4
-        wing_l = unit_length
-        wing_w = unit_length * 6
-        tail_h = unit_length
-        tail_l = unit_length
-        tail_w = unit_length * 2
+        #fuse_h = 
 
         # points are in NED coordinates
         # define the points on the aircraft following diagram Fig 2.14
