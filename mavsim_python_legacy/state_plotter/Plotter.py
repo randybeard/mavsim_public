@@ -46,11 +46,9 @@ class Plotter:
 
         # initialize Qt gui application and window
         self.default_window_size = (1000, 800)
-        self.app = pg.QtWidgets.QApplication([])
-        self.window = pg.GraphicsLayoutWidget(title=window_title)
-
+        self.app = pg.QtGui.QApplication([])
+        self.window = pg.GraphicsWindow(title=window_title)
         self.window.resize(*self.default_window_size)
-        #self.window.move(1000, 1000)
         self.window.setBackground(self.background_color)
         self.old_windows = []
         self.row_plot_count = 0

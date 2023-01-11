@@ -1,0 +1,19 @@
+3.1 Implement the MAV equations of motion given in equations (3.14)
+through (3.17) of the textbook. Assume that the inputs are the forces and moments
+applied to the MAV in the body frame. Changeable parameters should
+include the mass, the moments and products of inertia, and the initial
+conditions for each state. Use the parameters given in appendix E.
+    - Implement the "derivatives()" function in "mav_dynamics_forces.py".
+
+3.2 Verify that the equations of motion are correct by individually set-
+ting the forces and moments along each axis to a nonzero value and
+convincing yourself that the simulated motion is appropriate.
+    - Run "mavsim_chap3.py, then modify forces and verify your model.
+    - Save a video or demonstrate a couple different run cases.
+
+3.3 Since Jxz is non-zero, there is gyroscopic coupling between roll and
+yaw. To test your simulation, set Jxz to zero and place nonzero mo-
+ments on l and n and verify that there is no coupling between the
+roll and yaw axes. Verify that when Jxz is not zero, there is coupling
+between the roll and yaw axes.
+    - Save a video or demonstrate both of these cases.

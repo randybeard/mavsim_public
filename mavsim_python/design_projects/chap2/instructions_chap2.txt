@@ -1,0 +1,18 @@
+""The objective of this assignment is to create a 3D rendering of a MAV
+  that correctly displays the rotated and translated state of the MAV. Creating
+  animations is described in Appendix D and example files are contained on
+  the textbook website""
+
+2.1 Read Appendix D and study carefully the spacecraft animation on the
+textbook website.
+
+2.2 Create an animation drawing of the aircraft shown in Figure 2.14.
+	- Complete each TODO section in the "draw_mav.py" file
+     
+2.3 Exercise your animation model by moving your aircraft through var-
+ious sequences of rotations and translations. Verify that your results
+make sense.
+	- Run the "mavsim_chap2.py" launch file
+  - Save a recording using "video_writer.py" or use your own method
+    to record a video. Or demonstrate your program.
+	

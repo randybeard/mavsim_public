@@ -1,9 +1,5 @@
 #!/usr/bin/env python
-import sys
-sys.path.append('..')
-sys.path.append('../..')
 import time
-
 from builtins import input
 from IPython.core.debugger import set_trace
 
