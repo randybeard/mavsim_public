@@ -87,7 +87,7 @@ class Plotter():
     def set_window_length(self, plot_id, window_length):
         self._window_length_list[plot_id] = window_length
   
-    def __update_plots(self):
+    def update_plots(self):
         for plot_index in range(self._num_plots):
             num_data_sets = len(self._data_lines_list[plot_index])
             for dataset_index in range(num_data_sets):
@@ -96,14 +96,14 @@ class Plotter():
                     self._xdata_list[plot_index][dataset_index],
                     self._ydata_list[plot_index][dataset_index])
     
-    def update_window(self, sleep_time = 0):
-        self.__update_plots()
+    def process_app(self, sleep_time = 0):
         self._app.processEvents()
         time.sleep(sleep_time)
 
     def show_window(self, sleep_time = 0):
+        self.update_plots()
         self._window.show()
-        self.update_window(sleep_time)
+        self.process_app(sleep_time)
 
     def close_window(self):
         self._window.close()
@@ -113,14 +113,3 @@ class Plotter():
 
     def save_image(self,image_name="plotter_image"):
         self._widget.grab().save(image_name+".png")
-
-
-    # def __set_x_range(self, plot_index):
-    #     data_window_width = self._window_width_list[plot_index]
-    #     max_x_arr = max(self._xdata_list[plot_index])
-    #     if max_x_arr != []:
-    #         x_max = max(max_x_arr)
-    #         x_min = min(max_x_arr)
-    #         if x_min < x_max - data_window_width:
-    #             x_min = x_max - data_window_width
-    #         self._layout.itemAt(plot_index).widget().setXRange(x_min,x_max)

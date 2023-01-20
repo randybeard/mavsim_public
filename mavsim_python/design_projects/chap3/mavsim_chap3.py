@@ -19,6 +19,7 @@ import pyqtgraph as pg
 VIDEO = False
 PLOTS = True
 ANIMATION = True
+SAVE_PLOT_IMAGE = False
 
 if VIDEO is True:
     from viewers.video_writer import VideoWriter
@@ -31,7 +32,7 @@ app = pg.QtWidgets.QApplication([]) # use the same main process for Qt applicati
 if ANIMATION:
     mav_view = MavViewer(app=app)  # initialize the mav viewer
 if PLOTS:
-    data_view = DataViewer(app=app)  # initialize view of data plots
+    data_view = DataViewer(app=app,dt=SIM.ts_simulation)  # initialize view of data plots
 
 # initialize elements of the architecture
 mav = MavDynamics(SIM.ts_simulation)
@@ -63,15 +64,17 @@ while sim_time < end_time:
         data_view.update(mav.true_state,  # true states
                         mav.true_state,  # estimated states
                         mav.true_state,  # commanded states
-                        delta,  # inputs to the aircraft
-                        SIM.ts_simulation)
+                        delta)  # inputs to the aircraft
+    if ANIMATION or PLOTS:
+        app.processEvents()
+        
     if VIDEO is True:
         video.update(sim_time)
 
     # ------- increment time -------------
     sim_time += SIM.ts_simulation
 
-if PLOTS:
+if SAVE_PLOT_IMAGE:
     data_view.save_plot_image("ch3_plot")
 
 if VIDEO is True:

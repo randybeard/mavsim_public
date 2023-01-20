@@ -51,4 +51,6 @@ class MavViewer():
         view_location = Vector(state.east, state.north, state.altitude)  # defined in ENU coordinates
         self.window.opts['center'] = view_location
         # redraw
+    
+    def process_app(self):
         self.app.processEvents()
