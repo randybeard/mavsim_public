@@ -31,7 +31,7 @@ motions_time = 0
 time_per_motion = 3
 
 # main simulation loop
-while sim_time < SIM.end_time:
+while sim_time < 20:
     # -------vary states to check viewer-------------
     if motions_time < time_per_motion:
         state.north += 10*SIM.ts_simulation

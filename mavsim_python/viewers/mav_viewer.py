@@ -11,16 +11,15 @@ sys.path.append("..")
 import numpy as np
 import pyqtgraph as pg
 import pyqtgraph.opengl as gl
-#import pyopengl as gl
 import pyqtgraph.Vector as Vector
 from viewers.draw_mav import DrawMav
 
 
 class MavViewer():
-    def __init__(self):
+    def __init__(self,app = pg.QtWidgets.QApplication([])):
         self.scale = 100
         # initialize Qt gui application and window
-        self.app = pg.QtWidgets.QApplication([])  # initialize QT
+        self.app = app  # initialize QT
         self.window = gl.GLViewWidget()  # initialize the view object
         self.window.setWindowTitle('MAV Viewer')
         grid = gl.GLGridItem() # make a grid to represent the ground

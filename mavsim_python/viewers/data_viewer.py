@@ -7,153 +7,201 @@ part of mavsimPy
         12/17/2018 - RWB
         1/14/2019 - RWB
         2/27/2020 - RWB
+        1/19/2023 - DLC
 """
-from state_plotter.Plotter import Plotter
-from state_plotter.plotter_args import *
-
+from plotter.plotter import Plotter
+import pyqtgraph as pg
 
 class DataViewer:
-    def __init__(self):
-        time_window_length=100
-        self.plotter = Plotter(plotting_frequency=100, # refresh plot every 10 time steps
-                               time_window=time_window_length)  # plot last time_window seconds of data
-        # set up the plot window
+    def __init__(self, data_window_length = 210, #number of data points plotted at a time
+                 plot_period=1.5, # time interval between a plot update
+                 data_recording_period=0.2,
+                 app = pg.QtWidgets.QApplication([])): # time interval between recording a data update
+        self._data_window_length=data_window_length
+        self._update_counter = 0
+        self._plots_per_row = 4
+        self._plotter = Plotter(self._plots_per_row, app=app)  # plot last time_window seconds of data
+        self._plot_period = plot_period
+        self._data_recording_period = data_recording_period
+        self._plot_delay = 0
+        self._data_recording_delay = 0
+        self._time = 0
+
+        #define colors
+        truth_color = (0,255,0)
+        truth_color_2 = (160,202,111)
+        truth_color_3 = (124,230,167)
+        estimate_color = (255,0,0)
+        estimate_color_2 = (255,150,150)
+        estimate_color_3 = (255,154,111)
+        control_color = (0,0,255)
+
         # define first row
-        pn_plots = PlotboxArgs(plots=['pn', 'pn_e'],
-                               labels={'left': 'pn(m)', 'bottom': 'Time (s)'},
-                               time_window=time_window_length)
-        pe_plots = PlotboxArgs(plots=['pe', 'pe_e'],
-                               labels={'left': 'pe(m)', 'bottom': 'Time (s)'},
-                               time_window=time_window_length)
-        h_plots = PlotboxArgs(plots=['h', 'h_e', 'h_c'],
-                              labels={'left': 'h(m)', 'bottom': 'Time (s)'},
-                              time_window=time_window_length)
-        wind_plots = PlotboxArgs(plots=['wn', 'wn_e', 'we', 'we_e'],
-                                 labels={'left': 'wind(m/s)', 'bottom': 'Time (s)'},
-                                 time_window=time_window_length)
-        first_row = [pn_plots, pe_plots, h_plots, wind_plots]
+        self._plotter.create_plot_widget(plot_id='pn', xlabel='Time (s)', ylabel='pn(m)',
+                                        window_length=self._data_window_length)
+        self._plotter.create_plot_widget(plot_id='pe', xlabel='Time (s)', ylabel='pe(m)',
+                                       window_length=self._data_window_length)
+        self._plotter.create_plot_widget(plot_id='h', xlabel='Time (s)', ylabel='h(m)',
+                                       window_length=self._data_window_length)
+        self._plotter.create_plot_widget(plot_id='wind', xlabel='Time (s)', ylabel='wind(m/s)',
+                                       window_length=self._data_window_length)
+        self._plotter.create_data_set(plot_id="pn", data_label="pn", data_color=truth_color)
+        self._plotter.create_data_set(plot_id="pn", data_label="pn_e", data_color=estimate_color) 
+        self._plotter.create_data_set(plot_id="pe", data_label="pe", data_color=truth_color)
+        self._plotter.create_data_set(plot_id="pe", data_label="pe_e", data_color=estimate_color)
+        self._plotter.create_data_set(plot_id="h", data_label="h", data_color=truth_color)
+        self._plotter.create_data_set(plot_id="h", data_label="h_e", data_color=estimate_color)
+        self._plotter.create_data_set(plot_id="h", data_label="h_c", data_color=control_color)
+        self._plotter.create_data_set(plot_id="wind", data_label="wn", data_color=truth_color)
+        self._plotter.create_data_set(plot_id="wind", data_label="wn_e", data_color=estimate_color)
+        self._plotter.create_data_set(plot_id="wind", data_label="we", data_color=truth_color_2)
+        self._plotter.create_data_set(plot_id="wind", data_label="we_e", data_color=estimate_color_2)
 
         # define second row
-        Va_plots = PlotboxArgs(plots=['Va', 'Va_e', 'Va_c'],
-                               labels={'left': 'Va(m/s)', 'bottom': 'Time (s)'},
-                               time_window=time_window_length)
-        alpha_plots = PlotboxArgs(plots=['alpha', 'alpha_e'],
-                                  labels={'left': 'alpha(deg)', 'bottom': 'Time (s)'},
-                                  rad2deg=True,
-                                  time_window=time_window_length)
-        beta_plots = PlotboxArgs(plots=['beta', 'beta_e'],
-                                 labels={'left': 'beta(deg)', 'bottom': 'Time (s)'},
-                                 rad2deg=True,
-                                 time_window=time_window_length)
-        Vg_plots = PlotboxArgs(plots=['Vg', 'Vg_e'],
-                               labels={'left': 'Vg(m/s)', 'bottom': 'Time (s)'},
-                               time_window=time_window_length)
-        second_row = [Va_plots, alpha_plots, beta_plots, Vg_plots]
-
+        self._plotter.create_plot_widget(plot_id='Va', xlabel='Time (s)', ylabel='Va(m/s)',
+                                       window_length=self._data_window_length)
+        self._plotter.create_plot_widget(plot_id='alpha', xlabel='Time (s)', ylabel='alpha(deg)',
+                                       window_length=self._data_window_length)
+        self._plotter.create_plot_widget(plot_id='beta', xlabel='Time (s)', ylabel='beta(deg)',
+                                       window_length=self._data_window_length)
+        self._plotter.create_plot_widget(plot_id='Vg', xlabel='Time (s)', ylabel='Vg(m/s)',
+                                       window_length=self._data_window_length)
+        self._plotter.create_data_set(plot_id="Va", data_label="Va", data_color=truth_color)
+        self._plotter.create_data_set(plot_id="Va", data_label="Va_e", data_color=estimate_color)
+        self._plotter.create_data_set(plot_id="Va", data_label="Va_c", data_color=control_color)
+        self._plotter.create_data_set(plot_id="alpha", data_label="alpha", data_color=truth_color)
+        self._plotter.create_data_set(plot_id="alpha", data_label="alpha_e", data_color=estimate_color)
+        self._plotter.create_data_set(plot_id="beta", data_label="beta", data_color=truth_color)
+        self._plotter.create_data_set(plot_id="beta", data_label="beta_e", data_color=estimate_color)
+        self._plotter.create_data_set(plot_id="Vg", data_label="Vg", data_color=truth_color)
+        self._plotter.create_data_set(plot_id="Vg", data_label="Vg_e", data_color=estimate_color)
+        
         # define third row
-        phi_plots = PlotboxArgs(plots=['phi', 'phi_e', 'phi_c'],
-                                labels={'left': 'phi(deg)', 'bottom': 'Time (s)'},
-                                rad2deg=True,
-                                time_window=time_window_length)
-        theta_plots = PlotboxArgs(plots=['theta', 'theta_e', 'theta_c'],
-                                  labels={'left': 'theta(deg)', 'bottom': 'Time (s)'},
-                                  rad2deg=True,
-                                  time_window=time_window_length)
-        psi_plots = PlotboxArgs(plots=['psi', 'psi_e'],
-                                labels={'left': 'psi(deg)', 'bottom': 'Time (s)'},
-                                rad2deg=True,
-                                time_window=time_window_length)
-        chi_plots = PlotboxArgs(plots=['chi', 'chi_e', 'chi_c'],
-                                labels={'left': 'chi(deg)', 'bottom': 'Time (s)'},
-                                rad2deg=True,
-                                time_window=time_window_length)
-        third_row = [phi_plots, theta_plots, psi_plots, chi_plots]
+        self._plotter.create_plot_widget(plot_id='phi', xlabel='Time (s)', ylabel='phi(deg)',
+                                       window_length=self._data_window_length)
+        self._plotter.create_plot_widget(plot_id='theta', xlabel='Time (s)', ylabel='theta(deg)',
+                                       window_length=self._data_window_length)
+        self._plotter.create_plot_widget(plot_id='psi', xlabel='Time (s)', ylabel='psi(deg)',
+                                       window_length=self._data_window_length)
+        self._plotter.create_plot_widget(plot_id='chi', xlabel='Time (s)', ylabel='chi(deg)',
+                                       window_length=self._data_window_length)
+        self._plotter.create_data_set(plot_id="phi", data_label="phi", data_color=truth_color)
+        self._plotter.create_data_set(plot_id="phi", data_label="phi_e", data_color=estimate_color)
+        self._plotter.create_data_set(plot_id="phi", data_label="phi_c", data_color=control_color)
+        self._plotter.create_data_set(plot_id="theta", data_label="theta", data_color=truth_color)
+        self._plotter.create_data_set(plot_id="theta", data_label="theta_e", data_color=estimate_color)
+        self._plotter.create_data_set(plot_id="theta", data_label="theta_c", data_color=control_color)
+        self._plotter.create_data_set(plot_id="psi", data_label="psi", data_color=truth_color)
+        self._plotter.create_data_set(plot_id="psi", data_label="psi_e", data_color=estimate_color)
+        self._plotter.create_data_set(plot_id="psi", data_label="psi_c", data_color=control_color)
+        self._plotter.create_data_set(plot_id="chi", data_label="chi", data_color=truth_color)
+        self._plotter.create_data_set(plot_id="chi", data_label="chi_e", data_color=estimate_color)
+        self._plotter.create_data_set(plot_id="chi", data_label="chi_c", data_color=control_color)
 
         # define fourth row
-        p_plots = PlotboxArgs(plots=['p', 'p_e'],
-                              labels={'left': 'p(deg/s)', 'bottom': 'Time (s)'},
-                              rad2deg=True,
-                              time_window=time_window_length)
-        q_plots = PlotboxArgs(plots=['q', 'q_e'],
-                              labels={'left': 'q(deg/s)', 'bottom': 'Time (s)'},
-                              rad2deg=True,
-                              time_window=time_window_length)
-        r_plots = PlotboxArgs(plots=['r', 'r_e'],
-                              labels={'left': 'r(deg)', 'bottom': 'Time (s)'},
-                              rad2deg=True,
-                              time_window=time_window_length)
-        gyro_plots = PlotboxArgs(plots=['bx', 'bx_e', 'by', 'by_e', 'bz', 'bz_e'],
-                                 labels={'left': 'bias(deg/s)', 'bottom': 'Time (s)'},
-                                 rad2deg=True,
-                                 time_window=time_window_length)
-        fourth_row = [p_plots, q_plots, r_plots, gyro_plots]
+        self._plotter.create_plot_widget(plot_id='p', xlabel='Time (s)', ylabel='p(deg/s)',
+                                       window_length=self._data_window_length)
+        self._plotter.create_plot_widget(plot_id='q', xlabel='Time (s)', ylabel='q(deg/s)',
+                                       window_length=self._data_window_length)
+        self._plotter.create_plot_widget(plot_id='r', xlabel='Time (s)', ylabel='r(deg/s)',
+                                       window_length=self._data_window_length)
+        self._plotter.create_plot_widget(plot_id='bias', xlabel='Time (s)', ylabel='bias(deg/s)',
+                                       window_length=self._data_window_length)
+        self._plotter.create_data_set(plot_id="p", data_label="p", data_color=truth_color)
+        self._plotter.create_data_set(plot_id="p", data_label="p_e", data_color=estimate_color)
+        self._plotter.create_data_set(plot_id="q", data_label="q", data_color=truth_color)
+        self._plotter.create_data_set(plot_id="q", data_label="q_e", data_color=estimate_color)
+        self._plotter.create_data_set(plot_id="r", data_label="r", data_color=truth_color)
+        self._plotter.create_data_set(plot_id="r", data_label="r_e", data_color=estimate_color)
+        self._plotter.create_data_set(plot_id="bias", data_label="bx", data_color=truth_color)
+        self._plotter.create_data_set(plot_id="bias", data_label="bx_e", data_color=estimate_color)
+        self._plotter.create_data_set(plot_id="bias", data_label="by", data_color=truth_color_2)
+        self._plotter.create_data_set(plot_id="bias", data_label="by_e", data_color=estimate_color_2)
+        self._plotter.create_data_set(plot_id="bias", data_label="bz", data_color=truth_color_3)
+        self._plotter.create_data_set(plot_id="bias", data_label="bz_e", data_color=estimate_color_3)
+
         # define fifth row
-        delta_e_plot = PlotboxArgs(plots=['delta_e'],
-                                   labels={'left': 'delta_e(deg)', 'bottom': 'Time (s)'},
-                                   rad2deg=True,
-                                   time_window=time_window_length)
-        delta_a_plot = PlotboxArgs(plots=['delta_a'],
-                                   labels={'left': 'delta_a(deg)', 'bottom': 'Time (s)'},
-                                   rad2deg=True,
-                                   time_window=time_window_length)
-        delta_r_plot = PlotboxArgs(plots=['delta_r'],
-                                   labels={'left': 'delta_r(deg)', 'bottom': 'Time (s)'},
-                                   rad2deg=True,
-                                   time_window=time_window_length)
-        delta_t_plot = PlotboxArgs(plots=['delta_t'],
-                                   labels={'left': 'delta_t(deg)', 'bottom': 'Time (s)'},
-                                   rad2deg=False,
-                                   time_window=time_window_length)
-        fifth_row = [delta_e_plot, delta_a_plot, delta_r_plot, delta_t_plot]
-        plots = [first_row,
-                 second_row,
-                 third_row,
-                 fourth_row,
-                 fifth_row
-                 ]
-        # Add plots to the window
-        self.plotter.add_plotboxes(plots)
-        # Define and label vectors for more convenient/natural data input
-        self.plotter.define_input_vector('true_state', ['pn', 'pe', 'h', 'Va', 'alpha', 'beta', 'phi', 'theta', 'chi',
-                                                        'p', 'q', 'r', 'Vg', 'wn', 'we', 'psi', 'bx', 'by', 'bz'])
-        self.plotter.define_input_vector('estimated_state', ['pn_e', 'pe_e', 'h_e', 'Va_e', 'alpha_e', 'beta_e',
-                                                             'phi_e', 'theta_e', 'chi_e', 'p_e', 'q_e', 'r_e',
-                                                             'Vg_e', 'wn_e', 'we_e', 'psi_e', 'bx_e', 'by_e', 'bz_e'])
-        self.plotter.define_input_vector('commands', ['h_c', 'Va_c', 'phi_c', 'theta_c', 'chi_c'])
-        self.plotter.define_input_vector('delta', ['delta_e', 'delta_a', 'delta_r', 'delta_t'])
-        # plot timer
-        self.time = 0.
+        self._plotter.create_plot_widget(plot_id='delta_e', xlabel='Time (s)', ylabel='delta_e(deg)',
+                                       window_length=self._data_window_length)
+        self._plotter.create_plot_widget(plot_id='delta_a', xlabel='Time (s)', ylabel='delta_a(deg)',
+                                       window_length=self._data_window_length)
+        self._plotter.create_plot_widget(plot_id='delta_r', xlabel='Time (s)', ylabel='delta_r(deg)',
+                                       window_length=self._data_window_length)
+        self._plotter.create_plot_widget(plot_id='delta_t', xlabel='Time (s)', ylabel='delta_t(deg)',
+                                       window_length=self._data_window_length)
+        self._plotter.create_data_set(plot_id="delta_e", data_label="delta_e", data_color=control_color)
+        self._plotter.create_data_set(plot_id="delta_a", data_label="delta_a", data_color=control_color)
+        self._plotter.create_data_set(plot_id="delta_r", data_label="delta_r", data_color=control_color)
+        self._plotter.create_data_set(plot_id="delta_t", data_label="delta_t", data_color=control_color)
+        self._plotter.show_window()
 
-    def update(self, true_state, estimated_state, commanded_state, delta, ts):
-        commands = [commanded_state.altitude, # h_c
-                    commanded_state.Va, # Va_c
-                    commanded_state.phi, # phi_c
-                    commanded_state.theta, # theta_c
-                    commanded_state.chi] # chi_c
-        ## Add the state data in vectors
-        # the order has to match the order in lines 72-76
-        true_state_list = [true_state.north, true_state.east, true_state.altitude,
-                           true_state.Va, true_state.alpha, true_state.beta,
-                           true_state.phi, true_state.theta, true_state.chi,
-                           true_state.p, true_state.q, true_state.r,
-                           true_state.Vg, true_state.wn, true_state.we, true_state.psi,
-                           true_state.bx, true_state.by, true_state.bz]
-        estimated_state_list = [estimated_state.north, estimated_state.east, estimated_state.altitude,
-                                estimated_state.Va, estimated_state.alpha, estimated_state.beta,
-                                estimated_state.phi, estimated_state.theta, estimated_state.chi,
-                                estimated_state.p, estimated_state.q, estimated_state.r,
-                                estimated_state.Vg, estimated_state.wn, estimated_state.we, estimated_state.psi,
-                                estimated_state.bx, estimated_state.by, estimated_state.bz]
-        delta_list = [delta.elevator, delta.aileron, delta.rudder, delta.throttle]
-        self.plotter.add_vector_measurement('true_state', true_state_list, self.time)
-        self.plotter.add_vector_measurement('estimated_state', estimated_state_list, self.time)
-        self.plotter.add_vector_measurement('commands', commands, self.time)
-        self.plotter.add_vector_measurement('delta', delta_list, self.time)
+    def update(self, true_state, estimated_state, commanded_state, delta, dt):
+        if self._data_recording_delay >= self._data_recording_period:
+            self.__update_data(true_state, estimated_state, commanded_state, delta, self._time)
+            self._data_recording_delay = 0
+        if self._plot_delay >= self._plot_period:
+            self.__update_plot()
+            self._plot_delay = 0
+        self._plot_delay += dt
+        self._data_recording_delay += dt
+        self._time += dt
+        
+    def __update_data(self, true_state, estimated_state, commanded_state, delta, t):
+        #add the commanded state data
+        self._plotter.add_data_point(plot_id='h', data_label='h_c', xvalue=t, yvalue=commanded_state.altitude)
+        self._plotter.add_data_point(plot_id='Va', data_label='Va_c', xvalue=t, yvalue=commanded_state.Va)
+        self._plotter.add_data_point(plot_id='phi', data_label='phi_c', xvalue=t, yvalue=commanded_state.phi)
+        self._plotter.add_data_point(plot_id='theta', data_label='theta_c', xvalue=t, yvalue=commanded_state.theta)
+        self._plotter.add_data_point(plot_id='chi', data_label='chi_c', xvalue=t, yvalue=commanded_state.chi)
+        #add the true state data
+        self._plotter.add_data_point(plot_id='pn', data_label='pn', xvalue=t, yvalue=true_state.north)
+        self._plotter.add_data_point(plot_id='pe', data_label='pe', xvalue=t, yvalue=true_state.east)
+        self._plotter.add_data_point(plot_id='h', data_label='h', xvalue=t, yvalue=true_state.altitude)
+        self._plotter.add_data_point(plot_id='Va', data_label='Va', xvalue=t, yvalue=true_state.Va)
+        self._plotter.add_data_point(plot_id='phi', data_label='phi', xvalue=t, yvalue=true_state.phi)
+        self._plotter.add_data_point(plot_id='theta', data_label='theta', xvalue=t, yvalue=true_state.theta)
+        self._plotter.add_data_point(plot_id='psi', data_label='psi', xvalue=t, yvalue=true_state.psi)
+        self._plotter.add_data_point(plot_id='chi', data_label='chi', xvalue=t, yvalue=true_state.chi)
+        self._plotter.add_data_point(plot_id='p', data_label='p', xvalue=t, yvalue=true_state.p)
+        self._plotter.add_data_point(plot_id='q', data_label='q', xvalue=t, yvalue=true_state.q)
+        self._plotter.add_data_point(plot_id='r', data_label='r', xvalue=t, yvalue=true_state.r)
+        self._plotter.add_data_point(plot_id='Vg', data_label='Vg', xvalue=t, yvalue=true_state.Vg)
+        self._plotter.add_data_point(plot_id='wind', data_label='wn', xvalue=t, yvalue=true_state.wn)
+        self._plotter.add_data_point(plot_id='wind', data_label='we', xvalue=t, yvalue=true_state.we)
+        self._plotter.add_data_point(plot_id='bias', data_label='bx', xvalue=t, yvalue=true_state.bx)
+        self._plotter.add_data_point(plot_id='bias', data_label='by', xvalue=t, yvalue=true_state.by)
+        self._plotter.add_data_point(plot_id='bias', data_label='bz', xvalue=t, yvalue=true_state.bz)
+        #add the estimated state data
+        self._plotter.add_data_point(plot_id='pn', data_label='pn_e', xvalue=t, yvalue=estimated_state.north)
+        self._plotter.add_data_point(plot_id='pe', data_label='pe_e', xvalue=t, yvalue=estimated_state.east)
+        self._plotter.add_data_point(plot_id='h', data_label='h_e', xvalue=t, yvalue=estimated_state.altitude)
+        self._plotter.add_data_point(plot_id='Va', data_label='Va_e', xvalue=t, yvalue=estimated_state.Va)
+        self._plotter.add_data_point(plot_id='phi', data_label='phi_e', xvalue=t, yvalue=estimated_state.phi)
+        self._plotter.add_data_point(plot_id='theta', data_label='theta_e', xvalue=t, yvalue=estimated_state.theta)
+        self._plotter.add_data_point(plot_id='psi', data_label='psi_e', xvalue=t, yvalue=estimated_state.psi)
+        self._plotter.add_data_point(plot_id='chi', data_label='chi_e', xvalue=t, yvalue=estimated_state.chi)
+        self._plotter.add_data_point(plot_id='p', data_label='p_e', xvalue=t, yvalue=estimated_state.p)
+        self._plotter.add_data_point(plot_id='q', data_label='q_e', xvalue=t, yvalue=estimated_state.q)
+        self._plotter.add_data_point(plot_id='r', data_label='r_e', xvalue=t, yvalue=estimated_state.r)
+        self._plotter.add_data_point(plot_id='Vg', data_label='Vg_e', xvalue=t, yvalue=estimated_state.Vg)
+        self._plotter.add_data_point(plot_id='wind', data_label='wn_e', xvalue=t, yvalue=estimated_state.wn)
+        self._plotter.add_data_point(plot_id='wind', data_label='we_e', xvalue=t, yvalue=estimated_state.we)
+        self._plotter.add_data_point(plot_id='bias', data_label='bx_e', xvalue=t, yvalue=estimated_state.bx)
+        self._plotter.add_data_point(plot_id='bias', data_label='by_e', xvalue=t, yvalue=estimated_state.by)
+        self._plotter.add_data_point(plot_id='bias', data_label='bz_e', xvalue=t, yvalue=estimated_state.bz)
+        #add control data
+        self._plotter.add_data_point(plot_id='delta_e', data_label='delta_e', xvalue=t, yvalue=delta.elevator)
+        self._plotter.add_data_point(plot_id='delta_a', data_label='delta_a', xvalue=t, yvalue=delta.aileron)
+        self._plotter.add_data_point(plot_id='delta_r', data_label='delta_r', xvalue=t, yvalue=delta.rudder)
+        self._plotter.add_data_point(plot_id='delta_t', data_label='delta_t', xvalue=t, yvalue=delta.throttle)
 
-        # Update and display the plot
-        self.plotter.update_plots()
 
-        # increment time
-        self.time += ts
+    def __update_plot(self):
+        self._plotter.update_window()
 
+    def close_data_viewer(self):
+        self._plotter.close_window()
+
+    def save_plot_image(self, plot_name):
+        self._plotter.save_image(plot_name)
 
