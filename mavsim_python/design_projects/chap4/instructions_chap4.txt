@@ -1,0 +1,11 @@
+4.1 Add simulation of the wind to the mavsim simulator. The wind element
+should produce wind gust along the body axes, and steady state wind
+along the NED inertial axes.
+
+4.2 Add forces and moments to the dynamics of the MAV. The inputs to
+the MAV should now be elevator, throttle, aileron, and rudder. The
+aerodynamic coefficients are given in appendix E.
+
+4.3 Verify your simulation by setting the control surface deflections to
+different values. Observe the response of the MAV. Does it behave as
+you think it should?
