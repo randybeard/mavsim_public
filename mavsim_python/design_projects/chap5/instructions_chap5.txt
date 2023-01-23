@@ -1,0 +1,52 @@
+5.1 Create a function that computes the trim state and the trim inputs for a
+desired airspeed of V_a and a desired flight path angle of ±γ. Set the
+initial condition in your simulation to the trim state and trim input, and
+verify that the aircraft maintains trim until numerical errors cause it to
+drift.
+
+    - Implement the "trim_objective_fun()" and set the "compute_trim()" 
+    initial conditions in "trim.py". 
+    - run "mavsim_chap5.py" to verify your model flys at trim conditions
+
+5.2 Create a function that computes the transfer function models
+described in this chapter, linearized about the trim state and trim inputs.
+
+    - Implment "compute_tf_model()" and the dependent functions "dT_dVa()",
+    "dT_ddelta_t()" in "compute_models.py".
+
+5.3 Create a function that computes the longitudinal and lateral state
+space models described in this chapter, linearized around trim.
+
+    - Implment "compute_ss_model()" and the dependent functions "df_dx()",
+      "df_du()", "f_euler()", "euler_state()", "quaternion_state()" in 
+      "compute_models.py".
+
+5.4 Compute eigenvalues of A_lon and notice that one of the eigenvalues
+will be zero and that there are two complex conjugate pairs. Using the
+formula (s + λ)(s + λ ∗ ) = s 2 + 2<λs + |λ| 2 = s 2 + 2ζω_n s + ω_n 2 ,
+extract ω_n and ζ from the two complex conjugate pairs of poles. The
+pair with the larger ω_n correspond to the short-period mode, and the
+pair with the smaller ω_n correspond to the phugoid mode. The phugoid
+and short-period modes can be excited by starting the simulation in a
+wings-level, constant-altitude trim condition, and placing an impulse
+on the elevator. By placing an impulse on the elevator, convince
+yourself that the eigenvalues of A lon adequately predict the short
+period and phugoid modes.
+
+  - Set up these conditions, run and test in "mavsim_chap5.py"
+  - Record or demonstrate the correct behavior in the simulator
+
+5.5 Compute eigenvalues of A lat and notice that there is an eigenvalue
+at zero, a real eigenvalue in the right half plane, a real eigenvalue in the
+left half plane, and a complex conjugate pair. The real eigenvalue in
+the right half plane is the spiral-divergence mode, the real eigenvalueLinear Design Models
+99 in the left half plane is the roll mode, and the complex eigenvalues
+are the dutch-roll mode. The lateral modes can be excited by starting
+the simulation in a wings-level, constant-altitude trim condition, and
+placing a unit doublet on the aileron or on the rudder. By simulating the
+doublet, convince yourself that the eigenvalues of A lat adequately
+predict the roll, spiral-divergence, and dutch-roll modes.
+
+ - Set up these conditions, run and test in "mavsim_chap5.py"
+ - Record or demonstrate the correct behavior in the simulator
+ - Save the and show the compute_model() output.
