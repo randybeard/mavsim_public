@@ -1,6 +1,6 @@
 """
 mavsimPy
-    - Chapter 3 launch file for Beard & McLain, PUP, 2012
+    - Chapter 2 launch file for Beard & McLain, PUP, 2012
     - Update history:  
         12/27/2018 - RWB
         1/17/2019 - RWB
