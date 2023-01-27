@@ -10,20 +10,19 @@ part of mavsimPy
         1/19/2023 - DLC
 """
 from plotter.plotter import Plotter
-import pyqtgraph as pg
 import numpy as np
+from tools.wrap import wrap
 
 class DataViewer:
-    def __init__(self, dt = 0.01,
-                 time_window_length = 50, #number of data points plotted at a time
-                 plot_period=0.2, # time interval between a plot update
-                 data_recording_period=0.01,
-                 app = pg.QtWidgets.QApplication([])): # time interval between recording a data update
+    def __init__(self, app,  dt = 0.01,
+                 time_window_length = 30, # number of data points plotted at a time
+                 plot_period = 0.2, # time interval between a plot update
+                 data_recording_period = 0.1): # time interval between recording a data update
         self._dt = dt
-        self._data_window_length= time_window_length/dt
+        self._data_window_length= time_window_length/data_recording_period
         self._update_counter = 0
         self._plots_per_row = 4
-        self._plotter = Plotter(self._plots_per_row, app=app)  # plot last time_window seconds of data
+        self._plotter = Plotter(app=app, plots_per_row=self._plots_per_row)  # plot last time_window seconds of data
         self._plot_period = plot_period
         self._data_recording_period = data_recording_period
         self._plot_delay = 0
@@ -151,52 +150,60 @@ class DataViewer:
         
     def __update_data(self, true_state, estimated_state, commanded_state, delta, t):
         #add the commanded state data
-        self._plotter.add_data_point(plot_id='h', data_label='h_c', xvalue=t, yvalue=commanded_state.altitude)
-        self._plotter.add_data_point(plot_id='Va', data_label='Va_c', xvalue=t, yvalue=commanded_state.Va)
-        self._plotter.add_data_point(plot_id='phi', data_label='phi_c', xvalue=t, yvalue=self.__rad_to_deg(commanded_state.phi))
-        self._plotter.add_data_point(plot_id='theta', data_label='theta_c', xvalue=t, yvalue=self.__rad_to_deg(commanded_state.theta))
-        self._plotter.add_data_point(plot_id='chi', data_label='chi_c', xvalue=t, yvalue=self.__rad_to_deg(commanded_state.chi))
+        if commanded_state != None:
+            self._plotter.add_data_point(plot_id='h', data_label='h_c', xvalue=t, yvalue=commanded_state.altitude)
+            self._plotter.add_data_point(plot_id='Va', data_label='Va_c', xvalue=t, yvalue=commanded_state.Va)
+            self._plotter.add_data_point(plot_id='phi', data_label='phi_c', xvalue=t, yvalue=self.__rad_to_deg(commanded_state.phi))
+            self._plotter.add_data_point(plot_id='theta', data_label='theta_c', xvalue=t, yvalue=self.__rad_to_deg(commanded_state.theta))
+            self._plotter.add_data_point(plot_id='chi', data_label='chi_c', xvalue=t, yvalue=self.__rad_to_deg(commanded_state.chi))
         #add the true state data
-        self._plotter.add_data_point(plot_id='pn', data_label='pn', xvalue=t, yvalue=true_state.north)
-        self._plotter.add_data_point(plot_id='pe', data_label='pe', xvalue=t, yvalue=true_state.east)
-        self._plotter.add_data_point(plot_id='h', data_label='h', xvalue=t, yvalue=true_state.altitude)
-        self._plotter.add_data_point(plot_id='Va', data_label='Va', xvalue=t, yvalue=true_state.Va)
-        self._plotter.add_data_point(plot_id='phi', data_label='phi', xvalue=t, yvalue=self.__rad_to_deg(true_state.phi))
-        self._plotter.add_data_point(plot_id='theta', data_label='theta', xvalue=t, yvalue=self.__rad_to_deg(true_state.theta))
-        self._plotter.add_data_point(plot_id='psi', data_label='psi', xvalue=t, yvalue=self.__rad_to_deg(true_state.psi))
-        self._plotter.add_data_point(plot_id='chi', data_label='chi', xvalue=t, yvalue=self.__rad_to_deg(true_state.chi))
-        self._plotter.add_data_point(plot_id='p', data_label='p', xvalue=t, yvalue=self.__rad_to_deg(true_state.p))
-        self._plotter.add_data_point(plot_id='q', data_label='q', xvalue=t, yvalue=self.__rad_to_deg(true_state.q))
-        self._plotter.add_data_point(plot_id='r', data_label='r', xvalue=t, yvalue=self.__rad_to_deg(true_state.r))
-        self._plotter.add_data_point(plot_id='Vg', data_label='Vg', xvalue=t, yvalue=true_state.Vg)
-        self._plotter.add_data_point(plot_id='wind', data_label='wn', xvalue=t, yvalue=true_state.wn)
-        self._plotter.add_data_point(plot_id='wind', data_label='we', xvalue=t, yvalue=true_state.we)
-        self._plotter.add_data_point(plot_id='bias', data_label='bx', xvalue=t, yvalue=self.__rad_to_deg(true_state.bx))
-        self._plotter.add_data_point(plot_id='bias', data_label='by', xvalue=t, yvalue=self.__rad_to_deg(true_state.by))
-        self._plotter.add_data_point(plot_id='bias', data_label='bz', xvalue=t, yvalue=self.__rad_to_deg(true_state.bz))
+        if true_state != None:
+            self._plotter.add_data_point(plot_id='pn', data_label='pn', xvalue=t, yvalue=true_state.north)
+            self._plotter.add_data_point(plot_id='pe', data_label='pe', xvalue=t, yvalue=true_state.east)
+            self._plotter.add_data_point(plot_id='h', data_label='h', xvalue=t, yvalue=true_state.altitude)
+            self._plotter.add_data_point(plot_id='Va', data_label='Va', xvalue=t, yvalue=true_state.Va)
+            self._plotter.add_data_point(plot_id='alpha', data_label='alpha', xvalue=t, yvalue=true_state.alpha)
+            self._plotter.add_data_point(plot_id='beta', data_label='beta', xvalue=t, yvalue=true_state.beta)
+            self._plotter.add_data_point(plot_id='phi', data_label='phi', xvalue=t, yvalue=self.__rad_to_deg(true_state.phi))
+            self._plotter.add_data_point(plot_id='theta', data_label='theta', xvalue=t, yvalue=self.__rad_to_deg(true_state.theta))
+            self._plotter.add_data_point(plot_id='psi', data_label='psi', xvalue=t, yvalue=self.__rad_to_deg(true_state.psi))
+            self._plotter.add_data_point(plot_id='chi', data_label='chi', xvalue=t, yvalue=self.__rad_to_deg(true_state.chi))
+            self._plotter.add_data_point(plot_id='p', data_label='p', xvalue=t, yvalue=self.__rad_to_deg(true_state.p))
+            self._plotter.add_data_point(plot_id='q', data_label='q', xvalue=t, yvalue=self.__rad_to_deg(true_state.q))
+            self._plotter.add_data_point(plot_id='r', data_label='r', xvalue=t, yvalue=self.__rad_to_deg(true_state.r))
+            self._plotter.add_data_point(plot_id='Vg', data_label='Vg', xvalue=t, yvalue=true_state.Vg)
+            self._plotter.add_data_point(plot_id='wind', data_label='wn', xvalue=t, yvalue=true_state.wn)
+            self._plotter.add_data_point(plot_id='wind', data_label='we', xvalue=t, yvalue=true_state.we)
+            self._plotter.add_data_point(plot_id='bias', data_label='bx', xvalue=t, yvalue=self.__rad_to_deg(true_state.bx))
+            self._plotter.add_data_point(plot_id='bias', data_label='by', xvalue=t, yvalue=self.__rad_to_deg(true_state.by))
+            self._plotter.add_data_point(plot_id='bias', data_label='bz', xvalue=t, yvalue=self.__rad_to_deg(true_state.bz))
         #add the estimated state data
-        self._plotter.add_data_point(plot_id='pn', data_label='pn_e', xvalue=t, yvalue=estimated_state.north)
-        self._plotter.add_data_point(plot_id='pe', data_label='pe_e', xvalue=t, yvalue=estimated_state.east)
-        self._plotter.add_data_point(plot_id='h', data_label='h_e', xvalue=t, yvalue=estimated_state.altitude)
-        self._plotter.add_data_point(plot_id='Va', data_label='Va_e', xvalue=t, yvalue=estimated_state.Va)
-        self._plotter.add_data_point(plot_id='phi', data_label='phi_e', xvalue=t, yvalue=self.__rad_to_deg(estimated_state.phi))
-        self._plotter.add_data_point(plot_id='theta', data_label='theta_e', xvalue=t, yvalue=self.__rad_to_deg(estimated_state.theta))
-        self._plotter.add_data_point(plot_id='psi', data_label='psi_e', xvalue=t, yvalue=self.__rad_to_deg(estimated_state.psi))
-        self._plotter.add_data_point(plot_id='chi', data_label='chi_e', xvalue=t, yvalue=self.__rad_to_deg(estimated_state.chi))
-        self._plotter.add_data_point(plot_id='p', data_label='p_e', xvalue=t, yvalue=self.__rad_to_deg(estimated_state.p))
-        self._plotter.add_data_point(plot_id='q', data_label='q_e', xvalue=t, yvalue=self.__rad_to_deg(estimated_state.q))
-        self._plotter.add_data_point(plot_id='r', data_label='r_e', xvalue=t, yvalue=self.__rad_to_deg(estimated_state.r))
-        self._plotter.add_data_point(plot_id='Vg', data_label='Vg_e', xvalue=t, yvalue=estimated_state.Vg)
-        self._plotter.add_data_point(plot_id='wind', data_label='wn_e', xvalue=t, yvalue=estimated_state.wn)
-        self._plotter.add_data_point(plot_id='wind', data_label='we_e', xvalue=t, yvalue=estimated_state.we)
-        self._plotter.add_data_point(plot_id='bias', data_label='bx_e', xvalue=t, yvalue=self.__rad_to_deg(estimated_state.bx))
-        self._plotter.add_data_point(plot_id='bias', data_label='by_e', xvalue=t, yvalue=self.__rad_to_deg(estimated_state.by))
-        self._plotter.add_data_point(plot_id='bias', data_label='bz_e', xvalue=t, yvalue=self.__rad_to_deg(estimated_state.bz))
+        if estimated_state != None:
+            self._plotter.add_data_point(plot_id='pn', data_label='pn_e', xvalue=t, yvalue=estimated_state.north)
+            self._plotter.add_data_point(plot_id='pe', data_label='pe_e', xvalue=t, yvalue=estimated_state.east)
+            self._plotter.add_data_point(plot_id='h', data_label='h_e', xvalue=t, yvalue=estimated_state.altitude)
+            self._plotter.add_data_point(plot_id='Va', data_label='Va_e', xvalue=t, yvalue=estimated_state.Va)
+            self._plotter.add_data_point(plot_id='alpha', data_label='alpha_e', xvalue=t, yvalue=estimated_state.alpha)
+            self._plotter.add_data_point(plot_id='beta', data_label='beta_e', xvalue=t, yvalue=estimated_state.beta)
+            self._plotter.add_data_point(plot_id='phi', data_label='phi_e', xvalue=t, yvalue=self.__rad_to_deg(estimated_state.phi))
+            self._plotter.add_data_point(plot_id='theta', data_label='theta_e', xvalue=t, yvalue=self.__rad_to_deg(estimated_state.theta))
+            self._plotter.add_data_point(plot_id='psi', data_label='psi_e', xvalue=t, yvalue=self.__rad_to_deg(estimated_state.psi))
+            self._plotter.add_data_point(plot_id='chi', data_label='chi_e', xvalue=t, yvalue=self.__rad_to_deg(estimated_state.chi))
+            self._plotter.add_data_point(plot_id='p', data_label='p_e', xvalue=t, yvalue=self.__rad_to_deg(estimated_state.p))
+            self._plotter.add_data_point(plot_id='q', data_label='q_e', xvalue=t, yvalue=self.__rad_to_deg(estimated_state.q))
+            self._plotter.add_data_point(plot_id='r', data_label='r_e', xvalue=t, yvalue=self.__rad_to_deg(estimated_state.r))
+            self._plotter.add_data_point(plot_id='Vg', data_label='Vg_e', xvalue=t, yvalue=estimated_state.Vg)
+            self._plotter.add_data_point(plot_id='wind', data_label='wn_e', xvalue=t, yvalue=estimated_state.wn)
+            self._plotter.add_data_point(plot_id='wind', data_label='we_e', xvalue=t, yvalue=estimated_state.we)
+            self._plotter.add_data_point(plot_id='bias', data_label='bx_e', xvalue=t, yvalue=self.__rad_to_deg(estimated_state.bx))
+            self._plotter.add_data_point(plot_id='bias', data_label='by_e', xvalue=t, yvalue=self.__rad_to_deg(estimated_state.by))
+            self._plotter.add_data_point(plot_id='bias', data_label='bz_e', xvalue=t, yvalue=self.__rad_to_deg(estimated_state.bz))
         #add control data
-        self._plotter.add_data_point(plot_id='delta_e', data_label='delta_e', xvalue=t, yvalue=self.__rad_to_deg(delta.elevator))
-        self._plotter.add_data_point(plot_id='delta_a', data_label='delta_a', xvalue=t, yvalue=self.__rad_to_deg(delta.aileron))
-        self._plotter.add_data_point(plot_id='delta_r', data_label='delta_r', xvalue=t, yvalue=self.__rad_to_deg(delta.rudder))
-        self._plotter.add_data_point(plot_id='delta_t', data_label='delta_t', xvalue=t, yvalue=self.__rad_to_deg(delta.throttle))
+        if delta != None:
+            self._plotter.add_data_point(plot_id='delta_e', data_label='delta_e', xvalue=t, yvalue=self.__rad_to_deg(delta.elevator))
+            self._plotter.add_data_point(plot_id='delta_a', data_label='delta_a', xvalue=t, yvalue=self.__rad_to_deg(delta.aileron))
+            self._plotter.add_data_point(plot_id='delta_r', data_label='delta_r', xvalue=t, yvalue=self.__rad_to_deg(delta.rudder))
+            self._plotter.add_data_point(plot_id='delta_t', data_label='delta_t', xvalue=t, yvalue=self.__rad_to_deg(delta.throttle))
 
     def process_app(self):
         self._plotter.process_app(0)
@@ -211,5 +218,7 @@ class DataViewer:
         self._plotter.save_image(plot_name)
 
     def __rad_to_deg(self, radians):
-        return radians*180/np.pi
+        rad = wrap(radians,0)
+        return rad*180/np.pi
+
 

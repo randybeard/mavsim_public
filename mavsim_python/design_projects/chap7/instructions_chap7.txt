@@ -1,0 +1,19 @@
+The objective of this project assignment is to add the sensors to the simulation
+model of the MAV.
+
+ - Implement the "sensors()" function in "mav_dynamics_sensors.py"
+
+7.1 Using the sensor parameters listed in appendix H, modify
+sensors.m to simulate the output of the rate gyros (Eq. (7.5)), the ac-
+celerometers (Eq. (7.3)), and the pressure sensors (Eq (7.9) and (7.10)).
+
+7.2 Using the sensor parameters listed in appendix H, modify gps to
+simulate the position measurement output of the GPS sensor
+(Eq. (7.18)–(7.20)) and the ground speed and course output of the GPS
+sensor (Eq. (7.25)–(7.26)).
+
+7.4 The sensor viewer, observe the output of each sensor and verify
+that its sign and magnitude are approximately correct, and that the
+shape of the waveform is approximately correct.
+
+    - Demonstrate or record your working sensors.

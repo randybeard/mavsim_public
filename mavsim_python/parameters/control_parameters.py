@@ -1,9 +1,11 @@
 import sys
 sys.path.append('..')
 import numpy as np
-import chap5.model_coef as TF
+import design_projects.chap5.model_coef as TF
 import parameters.aerosonde_parameters as MAV
 
+
+#### TODO #####
 gravity = MAV.gravity  # gravity constant
 Va0 = TF.Va_trim
 rho = 0 # density of air

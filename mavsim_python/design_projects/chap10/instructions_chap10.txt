@@ -1,0 +1,25 @@
+The objective of this assignment is to implement algorithms 5 and 6 from chapter 10. Down-
+load the sample code for this chapter from the book website and note the
+addition of two blocks labeled PathManager and PathFollower. The Chapter 10 output of the path manager is
+y manager = [flag , Va_d , r , q, c , ρ , λ]
+
+where flag=1 indicates that P_line(r, q) should be followed and flag=2
+indicates that P_orbit(c, ρ, λ) should be followed, and where Va_d is the desired
+airspeed.
+
+10.1 Modify path follow.m to implement algorithms 5 and 6. By
+modifying path manager chap10.m test both the straight-line
+and orbit-following algorithms on the guidance model given in equa-
+tion (9.18). An example Simulink diagram is given
+mavsim chap10 model.mdl. Test your design with significant
+constant winds (e.g., w_n = 3, w_e = −3). Tune the gains to get
+acceptable performance.
+Hint: The simulated model of GPS discussed in section 7.5 contains
+an unobservable bias. This bias will show up in the simulations. To
+evaluate and debug your path-following algorithm, you may want to
+turn off the Gauss-Markov bias generator.
+
+10.2 Implement the path following algorithms on the full six-DOF simula-
+tion of the MAV. Test your design with significant constant
+winds (e.g., w_n = 3, w_e = −3). If necessary, tune the gains to get
+acceptable performance.

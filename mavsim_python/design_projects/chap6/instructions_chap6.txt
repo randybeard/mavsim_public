@@ -1,0 +1,21 @@
+The objective of this assignment is to implement the lateral and longitudinal
+autopilots, as described in this chapter. You can use either successive loop
+closure, total energy control, or LQR.
+
+    - Implement either "autopilot.py", "autopilot_lqr.py" or "autopilot_tec.py".
+    - Tune gains in the "control_parameters.py" file.
+
+6.1 Implement the longitudinal autopilot and tune the gains. The input the
+longitudinal autopilot is the commanded airspeed and the commanded
+altitude. To make the process easier, you may want to initialize the
+system to trim inputs and then tune airspeed control first, followed by
+the pitch loop, and then the altitude loop.
+
+6.2 Implement the lateral autopilot. The input to the lateral autopilot is the
+commanded course angle.
+
+6.3 Test the autopilot using a variety of different step inputs on the com-
+manded airspeed, altitude, and course angle. Be sure to command
+course angles that are greater than ±180 degrees.
+
+  - Record or demonstrate your autopilot animation and graphs
