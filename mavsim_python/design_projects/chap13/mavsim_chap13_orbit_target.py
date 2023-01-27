@@ -12,7 +12,7 @@ import parameters.planner_parameters as PLAN
 from models.wind_simulation import WindSimulation
 from models.camera import Camera
 from models.target_dynamics import TargetDynamics
-from models.mav_dynamics_sensors import MavDynamics
+from models.mav_dynamics_camera import MavDynamics
 from models.gimbal import Gimbal
 from control.autopilot import Autopilot
 from estimation.observer import Observer
