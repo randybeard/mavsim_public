@@ -1,0 +1,25 @@
+The objective of this assignment is to implement algorithms 7 and 8 for
+following a set of waypoints denoted as W, and algorithm 10 for following a
+set of configurations denoted as P. The input to the path manager is either
+W or P, and the output is the path definition
+
+y_manager = [flag, Va_d , r , q-> , c , ρ , λ]
+
+11.1 Modify path manager line.m to implement algorithm 7 to fol-
+low the waypoint path defined in path planner chap11.m.
+Test and debug the algorithm on the guidance model given in equa-
+tion (9.18). When the algorithm is working well on the guidance
+model, verify that it performs adequately for the full six-DOF model.
+
+11.2 Modify path manager fillet.m and implement algorithm 8 to
+follow the waypoint path defined in path planner chap11.m.
+Test and debug the algorithm on the guidance model given in equa-
+tion (9.18). When the algorithm is working well on the guidance
+model, verify that it performs adequately for the full six-DOF model.
+
+11.3 Modify path manager dubins.m and implement algorithm 10 to
+follow the path configuration defined in
+path planner chap11.m. Test and debug the algorithm on the
+guidance model given in equation (9.18). When the algorithm is
+working well on the guidance model, verify that it performs adequately
+for the full six-DOF model.
