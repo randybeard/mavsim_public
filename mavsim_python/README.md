@@ -1,4 +1,4 @@
-#setup your environment for python
+# Setup your python environment
 
 pip3 install --upgrade pip
 
@@ -23,34 +23,34 @@ sudo apt autoremove pyqt6*
 
 #If you still have problems try cleaning your python environment or using a virtual environment.
 
-# To run the video writer install the following
+#To run the video writer install the following
 
 pip3 install opencv-python
 pip3 install Pillow
 
 
 
-####### Creating a python virtual environment. #######
+# Creating a python virtual environment
 
-# First install virtualenvwrapper
+#First install virtualenvwrapper
 
 pip3 install virtualenvwrapper
 
-# Export and source the appropriate files in bashrc file
+#Export and source the appropriate files in bashrc file
 
 export VIRTUALENVWRAPPER_PYTHON='/usr/bin/python3' 
 
 source /home/username/.local/bin/virtualenvwrapper.sh 
 
-# create and environment
+#create and environment
 
 mkvirtualenv name_of_env 
 
-# start using environment
+#start using environment
 
 workon name_of_env
 
-# close environemnt
+#close environemnt
 
 deactivate
 
