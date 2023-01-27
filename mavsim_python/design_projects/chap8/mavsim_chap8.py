@@ -6,7 +6,7 @@ mavsim_python
         2/24/2020 - RWB
 """
 import sys
-sys.path.append('..')
+sys.path.append('../..')
 import numpy as np
 import pyqtgraph as pg
 import parameters.simulation_parameters as SIM
