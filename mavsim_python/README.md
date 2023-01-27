@@ -1,12 +1,19 @@
 #setup your environment for python
 
 pip3 install --upgrade pip
+
 pip3 install numpy
+
 pip3 install scipy
+
 pip3 install matplotlib
+
 pip3 install pyqtgraph
+
 pip3 install pyqt6
+
 pip3 install pyopengl
+
 pip3 install pynput
 
 #sometimes there are issues with that data_viewer if you have ROS installed on your system, in this case. If you are having problems
@@ -32,6 +39,7 @@ pip3 install virtualenvwrapper
 # Export and source the appropriate files in bashrc file
 
 export VIRTUALENVWRAPPER_PYTHON='/usr/bin/python3' 
+
 source /home/username/.local/bin/virtualenvwrapper.sh 
 
 # create and environment
