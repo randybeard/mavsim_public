@@ -6,6 +6,7 @@ mavsim_python
 """
 import sys
 sys.path.append('../..')
+import pyqtgraph as pg
 import numpy as np
 import parameters.simulation_parameters as SIM
 from viewers.mav_viewer import MavViewer
@@ -15,12 +16,15 @@ from models.wind_simulation import WindSimulation
 from models.trim import compute_trim
 from models.compute_models import compute_model
 from tools.signals import Signals
-import pyqtgraph as pg
+from tools.quit_listener import QuitListener
+
+quitter = QuitListener()
 
 VIDEO = False
 PLOTS = True
 ANIMATION = True
 SAVE_PLOT_IMAGE = False
+COMPUTE_MODEL = False
 
 # video initialization
 if VIDEO is True:
@@ -30,11 +34,14 @@ if VIDEO is True:
                         output_rate=SIM.ts_video)
 
 #initialize the visualization
-app = pg.QtWidgets.QApplication([]) # use the same main process for Qt applications
+if ANIMATION or PLOTS:
+    app = pg.QtWidgets.QApplication([]) # use the same main process for Qt applications
 if ANIMATION:
     mav_view = MavViewer(app=app)  # initialize the mav viewer
 if PLOTS:
-    data_view = DataViewer(app=app, dt=SIM.ts_simulation, plot_period=SIM.ts_plotting)
+    # initialize view of data plots
+    data_view = DataViewer(app=app,dt=SIM.ts_simulation, plot_period=SIM.ts_plot_refresh, 
+                           data_recording_period=SIM.ts_plot_record_data, time_window_length=30)
 
 # initialize elements of the architecture
 wind = WindSimulation(SIM.ts_simulation)
@@ -48,7 +55,8 @@ mav._state = trim_state  # set the initial state of the mav to the trim state
 delta = trim_input  # set input to constant constant trim input
 
 # # compute the state space model linearized about trim
-compute_model(mav, trim_state, trim_input)
+if COMPUTE_MODEL:
+    compute_model(mav, trim_state, trim_input)
 
 # this signal will be used to excite modes
 input_signal = Signals(amplitude=0.3,
@@ -60,10 +68,11 @@ delta_r_trim = delta.rudder
 
 # initialize the simulation time
 sim_time = SIM.start_time
+end_time = 60
 
 # main simulation loop
-print("Press CTRL-C to exit...")
-while sim_time < SIM.end_time:
+print("Press 'Esc' to exit...")
+while sim_time < end_time:
 
     # -------physical system-------------
     #current_wind = wind.update()  # get the new wind vector
@@ -83,12 +92,17 @@ while sim_time < SIM.end_time:
     if PLOTS:
         plot_time = sim_time
         data_view.update(mav.true_state,  # true states
-                            mav.true_state,  # estimated states
-                            mav.true_state,  # commanded states
+                            None,  # estimated states
+                            None,  # commanded states
                             delta)  # inputs to aircraft
-
     if ANIMATION or PLOTS:
         app.processEvents()
+    if VIDEO is True:
+        video.update(sim_time)
+        
+    # -------Check to Quit the Loop-------
+    if quitter.check_quit():
+        break
 
     # -------increment time-------------
     sim_time += SIM.ts_simulation

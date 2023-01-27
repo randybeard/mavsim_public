@@ -7,15 +7,16 @@ mavsimPy
 """
 import sys
 sys.path.append('../..')
-import numpy as np
+import pyqtgraph as pg
 import parameters.simulation_parameters as SIM
-
 from models.mav_dynamics_control import MavDynamics
 from models.wind_simulation import WindSimulation
 from viewers.mav_viewer import MavViewer
 from viewers.data_viewer import DataViewer
 from message_types.msg_delta import MsgDelta
-import pyqtgraph as pg
+from tools.quit_listener import QuitListener
+
+quitter = QuitListener()
 
 VIDEO = False
 PLOTS = True
@@ -29,11 +30,14 @@ if VIDEO is True:
                         output_rate=SIM.ts_video)
 
 #initialize the visualization
-app = pg.QtWidgets.QApplication([]) # use the same main process for Qt applications
+if ANIMATION or PLOTS:
+    app = pg.QtWidgets.QApplication([]) # use the same main process for Qt applications
 if ANIMATION:
     mav_view = MavViewer(app=app)  # initialize the mav viewer
 if PLOTS:
-    data_view = DataViewer(app=app, dt=SIM.ts_simulation, plot_period=SIM.ts_plotting)
+    # initialize view of data plots
+    data_view = DataViewer(app=app,dt=SIM.ts_simulation, plot_period=SIM.ts_plot_refresh, 
+                           data_recording_period=SIM.ts_plot_record_data, time_window_length=30)
 
 # initialize elements of the architecture
 wind = WindSimulation(SIM.ts_simulation)
@@ -43,34 +47,38 @@ delta = MsgDelta()
 # initialize the simulation time
 sim_time = SIM.start_time
 plot_time = sim_time
-end_time = 100
+end_time = 60
 
 # main simulation loop
-print("Press Command-Q to exit...")
-while sim_time < SIM.end_time:
-    # -------set control surfaces-------------
+print("Press 'Esc' to exit...")
+while sim_time < end_time:
+    # ------- set control surfaces -------------
     delta.elevator = -0.1248
     delta.aileron = 0.001836
     delta.rudder = -0.0003026
     delta.throttle = 0.6768
 
-    # -------physical system-------------
+    # ------- physical system -------------
     current_wind = wind.update()  # get the new wind vector
     mav.update(delta, current_wind)  # propagate the MAV dynamics
 
     # -------update viewer-------------
-    # if sim_time-plot_time > SIM.ts_plotting:
     if ANIMATION:
         mav_view.update(mav.true_state)  # plot body of MAV
     if PLOTS:
         plot_time = sim_time
         data_view.update(mav.true_state,  # true states
-                            mav.true_state,  # estimated states
-                            mav.true_state,  # commanded states
+                            None,  # estimated states
+                            None,  # commanded states
                             delta)  # inputs to aircraft
-
     if ANIMATION or PLOTS:
         app.processEvents()
+    if VIDEO is True:
+        video.update(sim_time)
+        
+    # -------Check to Quit the Loop-------
+    if quitter.check_quit():
+        break
 
     # -------increment time-------------
     sim_time += SIM.ts_simulation

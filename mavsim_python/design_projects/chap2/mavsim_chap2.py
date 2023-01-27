@@ -8,10 +8,14 @@ mavsimPy
 """
 import sys
 sys.path.append('../..')
-import numpy as np
+import pyqtgraph as pg
 import parameters.simulation_parameters as SIM
 from viewers.mav_viewer import MavViewer
 from message_types.msg_state import MsgState
+from tools.quit_listener import QuitListener
+
+quitter = QuitListener()
+
 VIDEO = False
 if VIDEO is True:
     from viewers.video_writer import VideoWriter
@@ -20,7 +24,8 @@ if VIDEO is True:
                         output_rate=SIM.ts_video)
 
 # initialize the visualization
-mav_view = MavViewer()  # initialize the mav viewer
+app = pg.QtWidgets.QApplication([])
+mav_view = MavViewer(app=app)  # initialize the mav viewer
 
 # initialize elements of the architecture
 state = MsgState()
@@ -29,9 +34,12 @@ state = MsgState()
 sim_time = SIM.start_time
 motions_time = 0
 time_per_motion = 3
+end_time = 20
 
 # main simulation loop
-while sim_time < 20:
+print("Press Esc to exit...")
+
+while sim_time < end_time:
     # -------vary states to check viewer-------------
     if motions_time < time_per_motion:
         state.north += 10*SIM.ts_simulation
@@ -47,6 +55,7 @@ while sim_time < 20:
         state.phi += 0.1*SIM.ts_simulation
     # -------update viewer and video-------------
     mav_view.update(state)
+    mav_view.process_app()
 
     # -------increment time-------------
     sim_time += SIM.ts_simulation
@@ -57,8 +66,10 @@ while sim_time < 20:
     # -------update video---------------
     if VIDEO is True:
         video.update(sim_time)
+    
+    # -------Check to Quit the Loop-------
+    if quitter.check_quit():
+        break
 
 if VIDEO is True:
     video.update(sim_time)
-
-print("Press Ctrl-Q to exit...")

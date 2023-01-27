@@ -4,8 +4,8 @@ import time
 import sys
 
 class Plotter():
-    def __init__(self, plots_per_row, window_width=1280,
-                  window_height=800, app=pg.QtWidgets.QApplication([])):
+    def __init__(self, app, plots_per_row, window_width=1280,
+                  window_height=800):
         self._app = app
         self._window = pg.QtWidgets.QMainWindow()
         self._window.resize(window_width,window_height)
@@ -51,10 +51,10 @@ class Plotter():
         pen = pg.mkPen(color=data_color)
         data_line = self._layout.itemAt(plot_index).widget().plot([], [], 
             name=data_label, width=data_thickness, pen=pen)
-        self._data_line_labels[plot_index][data_label] = len(self._data_line_labels[plot_index]) - 1
         self._data_lines_list[plot_index].append(data_line)
         self._xdata_list[plot_index].append([])
         self._ydata_list[plot_index].append([])
+        self._data_line_labels[plot_index][data_label] = len(self._data_lines_list[plot_index]) - 1
 
     def add_data_point(self, plot_id, data_label, xvalue, yvalue):
         plot_index = self._plot_dict[plot_id]
@@ -91,7 +91,6 @@ class Plotter():
         for plot_index in range(self._num_plots):
             num_data_sets = len(self._data_lines_list[plot_index])
             for dataset_index in range(num_data_sets):
-                # self.__set_x_range(plot_index)
                 self._data_lines_list[plot_index][dataset_index].setData(
                     self._xdata_list[plot_index][dataset_index],
                     self._ydata_list[plot_index][dataset_index])
