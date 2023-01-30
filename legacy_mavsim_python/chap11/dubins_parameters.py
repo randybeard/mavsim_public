@@ -101,7 +101,7 @@ def compute_parameters(ps, chis, pe, chie, R):
         theta = 
         L4 = 
         # L is the minimum distance
-        L = np.min([L1, L2, L3, L4])
+        L_min = np.min([L1, L2, L3, L4])
         idx = np.argmin([L1, L2, L3, L4])
         if idx == 0:
             cs = 

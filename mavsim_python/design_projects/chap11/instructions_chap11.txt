@@ -11,15 +11,24 @@ Test and debug the algorithm on the guidance model given in equa-
 tion (9.18). When the algorithm is working well on the guidance
 model, verify that it performs adequately for the full six-DOF model.
 
+    - Implement "line_manager()" in "path_manager.py" and dependent functions
+
 11.2 Modify path manager fillet.m and implement algorithm 8 to
 follow the waypoint path defined in path planner chap11.m.
 Test and debug the algorithm on the guidance model given in equa-
 tion (9.18). When the algorithm is working well on the guidance
 model, verify that it performs adequately for the full six-DOF model.
 
-11.3 Modify path manager dubins.m and implement algorithm 10 to
+    - Implement "fillet_manager()" in "path_manager.py" and dependent functions
+
+11.3 Modify path manager dubins_parameters.py and implement algorithm 10 to
 follow the path configuration defined in
 path planner chap11.m. Test and debug the algorithm on the
 guidance model given in equation (9.18). When the algorithm is
 working well on the guidance model, verify that it performs adequately
 for the full six-DOF model.
+
+    - Implement "dubins_manager() in "path_manager.py" and dependent functions.
+    - Implement "compute_parameters()" in "dubin_parameters.py.
+
+    - Demonstrate or record your working system.
