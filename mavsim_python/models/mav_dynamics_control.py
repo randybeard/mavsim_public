@@ -134,7 +134,7 @@ class MavDynamics:
         ##### TODO ######
         # extract states (phi, theta, psi, p, q, r)
 
-        # compute gravitaional forces ([fg_x, fg_y, fg_z])
+        # compute gravitational forces ([fg_x, fg_y, fg_z])
 
 
 
