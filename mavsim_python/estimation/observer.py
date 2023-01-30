@@ -83,7 +83,7 @@ class EkfAttitude:
         self.Q = np.diag([0, 0])
         self.Q_gyro = np.diag([0, 0, 0])
         self.R_accel = np.diag([0, 0, 0])
-        self.N = 0  # number of prediction step per sample
+        self.N = 1  # number of prediction step per sample
         self.xhat = np.array([[0.0], [0.0]]) # initial state: phi, theta
         self.P = np.diag([0, 0])
         self.Ts = SIM.ts_control/self.N
@@ -207,25 +207,24 @@ class EkfPosition:
         # model propagation
         for i in range(0, self.N):
             # propagate model
-            self.xhat = np.shape((7,1))
+            self.xhat = np.zeros((7,1))
 
             # compute Jacobian
             
             # convert to discrete time models
             
             # update P with discrete time model
-            self.P = np.shape((7,7))
+            self.P = np.zeros((7,7))
 
     def measurement_update(self, measurement, state):
         # always update based on wind triangle pseudo measurement
         h = self.h_pseudo(self.xhat, measurement, state)
         C = jacobian(self.h_pseudo, self.xhat, measurement, state)
         y = np.array([[0, 0]]).T
-        S_inv = 0
+        S_inv = np.zeros((2,2))
         if (y-h).T @ S_inv @ (y-h) < self.pseudo_threshold:
-            L = 
-            self.P = 
-            self.xhat = 
+            self.P = np.zeros((7,7))
+            self.xhat = np.zeros((7,1))
 
         # only update GPS when one of the signals changes
         if (measurement.gps_n != self.gps_n_old) \
@@ -240,11 +239,10 @@ class EkfPosition:
                            measurement.gps_e,
                            measurement.gps_Vg,
                            y_chi]]).T
-            S_inv = 
+            S_inv = np.zeros((4,4))
             if (y-h).T @ S_inv @ (y-h) < self.gps_threshold:
-                L = self.P @ C.T @ S_inv
-                self.xhat = 
-                self.P = 
+                self.P = np.zeros((7,7))
+                self.xhat = np.zeros((7,1))
 
             # update stored GPS signals
             self.gps_n_old = measurement.gps_n
