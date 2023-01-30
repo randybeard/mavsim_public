@@ -1,0 +1,16 @@
+The objective of this assignment is to implement several of the path planning
+algorithms described in this chapter. The a map is created similar to those
+shown in figures 12.11 and 12.12. The file draw_map.py, and draw_path.py draws
+the map, the waypoint path, and the current straight-line or orbit that is
+being followed. The file path_planner.py contains a switch statement for
+manually choosing between different path planning algorithms. 
+
+12.1 Using "mavsim_chap12.py" Run the file using planner_flag = 'simple_straight'
+as an example. Implement "rrt_dubins.py" and set the planner_flag = 'simple_straight'
+to plan Dubins paths through the map. Implement the RRT algorithm based on Du-
+bins paths and the associated smoothing algorithm. Test and debug
+the algorithm on the guidance model given in equation (9.18). When
+the algorithm is working well on the guidance model, verify that it
+performs adequately for the full six-DOF model.
+
+ - Record or demonstrate your work

@@ -7,7 +7,7 @@ mavsim_python
         3/30/2022 - RWB
 """
 import sys
-sys.path.append('..')
+sys.path.append('../..')
 import pyqtgraph as pg
 import parameters.simulation_parameters as SIM
 import parameters.planner_parameters as PLAN
@@ -52,10 +52,10 @@ autopilot = Autopilot(SIM.ts_simulation)
 observer = Observer(SIM.ts_simulation)
 path_follower = PathFollower()
 path_manager = PathManager()
-# planner_flag = 'simple_straight'  # return simple waypoint path
+planner_flag = 'simple_straight'  # return simple waypoint path
 # planner_flag = 'simple_dubins'  # return simple dubins waypoint path
 # planner_flag = 'rrt_straight'  # plan path through city using straight-line RRT
-planner_flag = 'rrt_dubins'  # plan path through city using dubins RRT
+# planner_flag = 'rrt_dubins'  # plan path through city using dubins RRT
 path_planner = PathPlanner(app=app, planner_flag=planner_flag, show_planner=PLANNING_VIEWER)
 world_map = MsgWorldMap()
 
