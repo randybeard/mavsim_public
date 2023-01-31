@@ -55,7 +55,6 @@ mav = MavDynamics(SIM.ts_simulation)
 autopilot = Autopilot(SIM.ts_simulation)
 observer = Observer(SIM.ts_simulation)
 
-
 # autopilot commands
 from message_types.msg_autopilot import MsgAutopilot
 commands = MsgAutopilot()

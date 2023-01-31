@@ -1,15 +1,14 @@
 13.1 Implement the gimbal pointing algorithm described in section 13.2.
-Download the files from the website that are associated with this
-chapter. Modify param.m so that the buildings have a maximum
+planner_parameters.py so that the buildings have a maximum
 height of one meter, and modify the path planner so that the MAV
-moves between two fixed locations. Use the Simulink model
-mavsim chap13 gimbal.mdl and modify the file
-point gimbal.m to implement the gimbal pointing algorithm given
+moves between two fixed locations.  Implement the gimbal pointing algorithm given
 by equations (13.13) and (13.14).
+
+- Implement the functions in gimbal.py
 
 13.2 Implement the geolocation algorithms described in section 13.3. Use
 the gimbal-pointing routine developed in the previous problem to point
-the gimbal at the target. Use the Simulink model
-mavsim chap13 geolocation.mdl and modify the file
-geolocation.m to implement the geolocation algorithm described
-in section 13.3.
+the gimbal at the target. 
+
+- Implement the functions in geolocation.py 
+- Record or demonstrate your work.

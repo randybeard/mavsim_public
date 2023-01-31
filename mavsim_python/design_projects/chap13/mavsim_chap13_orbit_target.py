@@ -5,7 +5,7 @@ mavsim_python
         4/1/2022 - RWB
 """
 import sys
-sys.path.append('..')
+sys.path.append('../..')
 import pyqtgraph as pg
 import parameters.simulation_parameters as SIM
 import parameters.planner_parameters as PLAN
@@ -26,6 +26,7 @@ from viewers.camera_viewer import CameraViewer
 from message_types.msg_world_map import MsgWorldMap
 from message_types.msg_waypoints import MsgWaypoints
 from tools.quit_listener import QuitListener
+
 
 quitter = QuitListener()
 
