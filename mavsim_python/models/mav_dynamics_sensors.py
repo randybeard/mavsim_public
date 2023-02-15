@@ -200,7 +200,10 @@ class MavDynamics:
         # compute logitudinal torque in body frame (My)
 
         # compute lateral torques in body frame (Mx, Mz)
-
+        
+        self._forces[0] = fx
+        self._forces[1] = fy
+        self._forces[2] = fz
         forces_moments = np.array([[0, 0, 0, 0, 0, 0]]).T
         return forces_moments
 
