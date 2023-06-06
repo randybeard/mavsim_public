@@ -118,7 +118,7 @@ The Kalman filters presented in the book are meant to be tutorial and are intend
     
     **Mason Peterson, 2022** [Quadplane Trajectory Tracker](https://github.com/mbpeterson70/quadplane_project)
     
-    **Dan Richards, 2022** [Unit Tests on several chapters](https://github.com/dcrich/MAV-Unit-Tests)
+   <!-- BROKEN LINK **Dan Richards, 2022** [Unit Tests on several chapters](https://github.com/dcrich/MAV-Unit-Tests) -->
     
     **John Morrell, 2022** [Eigenstructure Assignment](https://github.com/Tarnarmour/FlightDynamics_Eigenstructure/blob/main/README.md)
     
