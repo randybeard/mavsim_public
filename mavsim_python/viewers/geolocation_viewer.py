@@ -5,8 +5,6 @@ target geolocation algorithm
         4/1/2022 - RWB
         4/6/2022 - RWB
 """
-import sys
-sys.path.append('..')
 from plotter.plotter import Plotter
 
 class GeolocationViewer:

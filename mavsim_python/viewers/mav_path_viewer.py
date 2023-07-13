@@ -5,8 +5,6 @@ mavsim_python: path viewer (for chapter 10)
         4/15/2019 - BGM
         3/30/2020 - RWB
 """
-import sys
-sys.path.append("..")
 import numpy as np
 import pyqtgraph as pg
 import pyqtgraph.opengl as gl

@@ -4,9 +4,7 @@ autopilot block for mavsim_python - Total Energy Control System
     - Last Update:
         2/14/2020 - RWB
 """
-import sys
 import numpy as np
-sys.path.append('..')
 import parameters.control_parameters as AP
 import parameters.aerosonde_parameters as MAV
 from tools.transfer_function import TransferFunction

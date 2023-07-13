@@ -6,10 +6,6 @@ mavsim_python: mav viewer (for chapter 2)
         4/15/2019 - BGM
         3/31/2020 - RWB
 """
-import sys
-sys.path.append("..")
-import numpy as np
-import pyqtgraph as pg
 import pyqtgraph.opengl as gl
 import pyqtgraph.Vector as Vector
 from viewers.draw_mav import DrawMav

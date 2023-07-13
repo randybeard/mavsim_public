@@ -4,9 +4,7 @@ autopilot block for mavsim_python
     - Last Update:
         2/6/2019 - RWB
 """
-import sys
 import numpy as np
-sys.path.append('..')
 import parameters.control_parameters as AP
 # from tools.transfer_function import TransferFunction
 from tools.wrap import wrap

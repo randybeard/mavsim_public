@@ -5,7 +5,6 @@ mavsim_python: drawing tools
         4/15/2019 - BGM
         3/30/2022 - RWB
 """
-
 import numpy as np
 import pyqtgraph.opengl as gl
 from planning.dubins_parameters import DubinsParameters

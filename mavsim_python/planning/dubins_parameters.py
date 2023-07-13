@@ -9,8 +9,6 @@
 #         3/30/2022 - RWB
 
 import numpy as np
-import sys
-sys.path.append('..')
 
 
 class DubinsParameters:

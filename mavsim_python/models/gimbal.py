@@ -6,8 +6,6 @@ part of mavsim
     - Update history:  
         3/31/2022 - RWB
 """
-import sys
-sys.path.append('..')
 import numpy as np
 from tools.rotations import Euler2Rotation
 import parameters.camera_parameters as CAM

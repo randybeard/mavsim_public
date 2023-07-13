@@ -4,11 +4,9 @@ autopilot block for mavsim_python
     - Last Update:
         2/10/22 - RWB
 """
-import sys
 import numpy as np
 from numpy import array, sin, cos, radians, concatenate, zeros, diag
 from scipy.linalg import solve_continuous_are, inv
-sys.path.append('..')
 import parameters.control_parameters as AP
 from tools.wrap import wrap
 import design_projects.chap5.model_coef as M

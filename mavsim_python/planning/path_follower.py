@@ -1,8 +1,5 @@
 import numpy as np
 from math import sin, cos
-import sys
-
-sys.path.append('..')
 from message_types.msg_autopilot import MsgAutopilot
 from tools.wrap import wrap
 

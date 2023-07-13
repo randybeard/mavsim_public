@@ -7,8 +7,6 @@ part of mavsim
     - Updated:
         4/1/2022 - RWB
 """
-import sys
-sys.path.append('..')
 import parameters.camera_parameters as CAM
 
 

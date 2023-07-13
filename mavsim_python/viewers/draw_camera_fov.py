@@ -4,8 +4,6 @@ mavsim_python: drawing tools
     - Update history:
         3/30/2022 - RWB
 """
-import sys
-sys.path.append('..')
 import numpy as np
 from numpy import cos, sin
 from numpy.linalg import norm

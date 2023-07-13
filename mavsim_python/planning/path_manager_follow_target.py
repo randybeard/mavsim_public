@@ -8,8 +8,6 @@ mavsim_python: drawing tools
 """
 
 import numpy as np
-import sys
-sys.path.append('..')
 from message_types.msg_path import MsgPath
 
 

@@ -4,10 +4,8 @@ observer
     - Last Update:
         3/2/2019 - RWB
 """
-import sys
 import numpy as np
 from scipy import stats
-sys.path.append('..')
 import parameters.control_parameters as CTRL
 import parameters.simulation_parameters as SIM
 import parameters.sensor_parameters as SENSOR

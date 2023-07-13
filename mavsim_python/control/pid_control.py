@@ -4,9 +4,7 @@ pid_control
     - Last Update:
         2/6/2019 - RWB
 """
-import sys
 import numpy as np
-sys.path.append('..')
 
 
 class PIDControl:

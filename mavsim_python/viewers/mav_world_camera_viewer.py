@@ -5,8 +5,6 @@ mavsim_python: world viewer (for chapter 12)
         4/15/2019 - RWB
         3/30/2022 - RWB
 """
-import sys
-sys.path.append("..")
 import numpy as np
 from viewers.draw_mav import DrawMav
 from viewers.draw_path import DrawPath
@@ -14,7 +12,6 @@ from viewers.draw_waypoints import DrawWaypoints
 from viewers.draw_map import DrawMap
 from viewers.draw_target import DrawTarget
 from viewers.draw_camera_fov import DrawFov
-import pyqtgraph as pg
 import pyqtgraph.opengl as gl
 
 class MAVWorldCameraViewer:

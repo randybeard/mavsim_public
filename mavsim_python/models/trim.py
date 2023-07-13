@@ -4,8 +4,6 @@ compute_trim
     - Update history:  
         12/29/2018 - RWB
 """
-import sys
-sys.path.append('..')
 import numpy as np
 from scipy.optimize import minimize
 from tools.rotations import Euler2Quaternion

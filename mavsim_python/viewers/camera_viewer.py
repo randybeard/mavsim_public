@@ -5,8 +5,6 @@ mavsim: camera viewer (for chapter 13)
         4/15/2019 - RWB
         3/31/2022 - RWB
 """
-import sys
-sys.path.append("..")
 import numpy as np
 import matplotlib.pyplot as plt
 import parameters.camera_parameters as CAM

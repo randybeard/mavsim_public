@@ -6,11 +6,7 @@
 #         4/16/2019 - RWB
 import numpy as np
 from message_types.msg_waypoints import MsgWaypoints
-from viewers.draw_waypoints import DrawWaypoints
-from viewers.draw_map import DrawMap
 from planning.dubins_parameters import DubinsParameters
-import pyqtgraph as pg
-import pyqtgraph.opengl as gl
 from viewers.planner_viewer import PlannerViewer
 
 

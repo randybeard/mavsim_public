@@ -7,8 +7,6 @@ mavsim_python: drawing tools
 """
 
 import numpy as np
-import sys
-sys.path.append('..')
 from planning.dubins_parameters import DubinsParameters
 from message_types.msg_path import MsgPath
 

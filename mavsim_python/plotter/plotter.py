@@ -1,7 +1,5 @@
 import pyqtgraph as pg
-import numpy as np
 import time
-import sys
 
 class Plotter():
     def __init__(self, app, plots_per_row, window_width=1280,

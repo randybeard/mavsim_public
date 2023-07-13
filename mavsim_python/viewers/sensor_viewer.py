@@ -10,7 +10,6 @@ part of mavsimPy
         1/19/2023 - DLC
 """
 from plotter.plotter import Plotter
-import pyqtgraph as pg
 import numpy as np
 
 class SensorViewer:

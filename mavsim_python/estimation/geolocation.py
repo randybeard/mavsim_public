@@ -5,10 +5,8 @@ target geolocation algorithm
         4/1/2022 - RWB
         4/6/2022 - RWB
 """
-import sys
 import numpy as np
 from scipy import stats
-sys.path.append('..')
 import parameters.simulation_parameters as SIM
 import parameters.camera_parameters as CAM
 from tools.rotations import Euler2Rotation

@@ -6,8 +6,6 @@
 #         4/3/2019 - RWB
 #         3/30/2022 - RWB
 import numpy as np
-import sys
-sys.path.append('..')
 from message_types.msg_waypoints import MsgWaypoints
 from planning.rrt_straight_line import RRTStraightLine
 from planning.rrt_dubins import RRTDubins

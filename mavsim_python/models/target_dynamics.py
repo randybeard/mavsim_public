@@ -6,8 +6,6 @@ part of mavsim
     - Update history:  
         3/30/2022 - RWB
 """
-import sys
-sys.path.append('..')
 import numpy as np
 
 # load message types

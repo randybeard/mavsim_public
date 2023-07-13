@@ -4,10 +4,7 @@ mavsim_python: waypoint viewer (for chapter 11)
     - Update history:
         4/15/2019 - BGM
 """
-import sys
-sys.path.append("..")
 import numpy as np
-import pyqtgraph as pg
 import pyqtgraph.opengl as gl
 from viewers.draw_mav import DrawMav
 from viewers.draw_path import DrawPath

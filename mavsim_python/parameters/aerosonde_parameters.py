@@ -1,5 +1,3 @@
-import sys
-sys.path.append('..')
 import numpy as np
 from tools.rotations import Euler2Quaternion
 

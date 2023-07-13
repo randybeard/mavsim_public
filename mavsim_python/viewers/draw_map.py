@@ -4,10 +4,8 @@ mavsim_python: drawing tools
     - Update history:
         4/15/2019 - BGM
 """
-
 import numpy as np
 import pyqtgraph.opengl as gl
-#from chap11.dubins_parameters import DubinsParameters
 
 
 class DrawMap:

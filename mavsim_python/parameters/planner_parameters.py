@@ -1,5 +1,3 @@
-import sys
-sys.path.append('..')
 import numpy as np
 import parameters.aerosonde_parameters as MAV
 

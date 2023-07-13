@@ -4,10 +4,15 @@ mavsimPy
     - Update history:  
         12/27/2018 - RWB
         1/17/2019 - RWB
-        1/5/2023 - DLC
+        1/5/2023 - David L. Christiansen
+        7/13/2023 - RWB
 """
-import sys
-sys.path.append('../..')
+import os, sys
+# insert parent directory at beginning of python search path
+from pathlib import Path
+sys.path.insert(0,os.fspath(Path(__file__).parents[1]))
+# use QuitListener for Linux or PC <- doesn't work on Mac
+#from tools.quit_listener import QuitListener
 import numpy as np
 import pyqtgraph as pg
 import parameters.simulation_parameters as SIM
@@ -15,9 +20,8 @@ from viewers.mav_viewer import MavViewer
 from viewers.data_viewer import DataViewer
 from message_types.msg_delta import MsgDelta
 from models.mav_dynamics_forces import MavDynamics
-from tools.quit_listener import QuitListener
 
-quitter = QuitListener()
+#quitter = QuitListener()
 
 #Running Parameters
 VIDEO = False
@@ -80,8 +84,8 @@ while sim_time < end_time:
     sim_time += SIM.ts_simulation
 
     # -------Check to Quit the Loop-------
-    if quitter.check_quit():
-        break
+    # if quitter.check_quit():
+    #     break
 
 # Save an Image of the Plot
 if SAVE_PLOT_IMAGE and PLOTS:

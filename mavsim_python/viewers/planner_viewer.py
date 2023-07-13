@@ -7,7 +7,6 @@ from message_types.msg_waypoints import MsgWaypoints
 from viewers.draw_waypoints import DrawWaypoints
 from viewers.draw_map import DrawMap
 from planning.dubins_parameters import DubinsParameters
-import pyqtgraph as pg
 import pyqtgraph.opengl as gl
 
 

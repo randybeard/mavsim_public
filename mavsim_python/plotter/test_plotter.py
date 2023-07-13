@@ -1,7 +1,6 @@
 from plotter import Plotter
 import random
 import numpy as np
-import time
 
 p = Plotter(3)
 p.show_window()

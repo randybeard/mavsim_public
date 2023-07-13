@@ -1,9 +1,13 @@
 """
 mavsimPy
     Homework check for chapter 3
+        1/5/2023 - David L. Christiansen
+        7/13/2023 - RWB
 """
-import sys
-sys.path.append('../..')
+import os, sys
+# insert parent directory at beginning of python search path
+from pathlib import Path
+sys.path.insert(0,os.fspath(Path(__file__).parents[1]))
 import numpy as np
 from models.mav_dynamics_forces import MavDynamics
 import parameters.simulation_parameters as SIM

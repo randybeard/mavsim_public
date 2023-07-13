@@ -4,9 +4,15 @@ mavsim_python
     - Last Update:
         2/21/2019 - RWB
         2/24/2020 - RWB
+        1/5/2023 - David L. Christiansen
+        7/13/2023 - RWB
 """
-import sys
-sys.path.append('../..')
+import os, sys
+# insert parent directory at beginning of python search path
+from pathlib import Path
+sys.path.insert(0,os.fspath(Path(__file__).parents[1]))
+# use QuitListener for Linux or PC <- doesn't work on Mac
+#from tools.quit_listener import QuitListener
 import numpy as np
 import pyqtgraph as pg
 import parameters.simulation_parameters as SIM
@@ -19,9 +25,8 @@ from estimation.observer import Observer
 from viewers.mav_viewer import MavViewer
 from viewers.data_viewer import DataViewer
 from viewers.sensor_viewer import SensorViewer
-from tools.quit_listener import QuitListener
 
-quitter = QuitListener()
+#quitter = QuitListener()
 
 VIDEO = False
 DATA_PLOTS = True
@@ -110,8 +115,8 @@ while sim_time < end_time:
         video.update(sim_time)
         
     # -------Check to Quit the Loop-------
-    if quitter.check_quit():
-        break
+    # if quitter.check_quit():
+    #     break
 
     # -------increment time-------------
     sim_time += SIM.ts_simulation

@@ -9,9 +9,7 @@ tf_control
 
     Transfer function form:  H(s) = u(s)/y(s) = k * (b1*s + b0)/(a1*s + a0)
 """
-import sys
 import numpy as np
-sys.path.append('..')
 
 
 class TFControl:

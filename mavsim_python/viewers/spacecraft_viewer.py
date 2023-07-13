@@ -4,9 +4,6 @@ scsim_python: spacecraft viewer (for appendix C)
     - Update history:
         1/13/2021 - TWM
 """
-import sys
-sys.path.append("..")
-import numpy as np
 import pyqtgraph as pg
 import pyqtgraph.opengl as gl
 import pyqtgraph.Vector as Vector
