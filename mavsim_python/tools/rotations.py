@@ -4,7 +4,7 @@ various tools to be used in mavPySim
 import numpy as np
 import scipy.linalg as linalg
 
-def Quaternion2Euler(quaternion):
+def quaternion_to_euler(quaternion):
     """
     converts a quaternion attitude to an euler angle attitude
     :param quaternion: the quaternion to be converted to euler angles in a np.matrix
@@ -20,7 +20,7 @@ def Quaternion2Euler(quaternion):
 
     return phi, theta, psi
 
-def Euler2Quaternion(phi, theta, psi):
+def euler_to_quaternion(phi, theta, psi):
     """
     Converts an euler angle attitude to a quaternian attitude
     :param euler: Euler angle attitude in a np.matrix(phi, theta, psi)
@@ -34,7 +34,7 @@ def Euler2Quaternion(phi, theta, psi):
 
     return np.array([[e0],[e1],[e2],[e3]])
 
-def Euler2Rotation(phi, theta, psi):
+def euler_to_rotation(phi, theta, psi):
     """
     Converts euler angles to rotation matrix (R_b^i)
     """
@@ -64,7 +64,7 @@ def Euler2Rotation(phi, theta, psi):
 
     return R
 
-def Quaternion2Rotation(quaternion):
+def quaternion_to_rotation(quaternion):
     """
     converts a quaternion attitude to a rotation matrix
     """
@@ -80,7 +80,7 @@ def Quaternion2Rotation(quaternion):
 
     return R
 
-def Rotation2Quaternion(R):
+def rotation_to_quaternion(R):
     """
     converts a rotation matrix to a unit quaternion
     """
@@ -119,6 +119,33 @@ def Rotation2Quaternion(R):
         e3 = 0.5*np.sqrt(((r12-r21)**2+(r13+r31)**2+(r23+r32)**2)/(3-tmp))
 
     return np.array([[e0], [e1], [e2], [e3]])
+
+def rotation_to_euler(R):
+    """
+    converts a rotation matrix to euler angles
+    """
+    # quat = rotation_to_quaternion(R)
+    # phi, theta, psi = quaternion_to_euler(quat)
+    if abs(R[2][0])!=1:
+        th1 = -np.arcsin(R[2][0])
+        #th2 = pi - th1
+        phi1 = np.arctan2(R[2][1]/np.cos(th1), R[2][2]/np.cos(th1))
+        #phi2 = arctan2(R[2][1]/cos(th2), R[2][2]/cos(th2))
+        psi1 = np.arctan2(R[1][0]/np.cos(th1), R[0][0]/np.cos(th1))
+        #psi2 = arctan2(R[1][0]/cos(th2), R[0][0]/cos(th2))
+        # both solutions (phi1, theta1, psi1) and (phi2, theta2, psi2) are correct
+        theta = th1
+        phi = phi1
+        psi = psi1
+    else:
+        psi = 0
+        if R[2][0]==-1:
+            theta = pi/2
+            phi = psi + np.arctan2(R[0][1], R[0][2])
+        else:
+            theta = -pi/2
+            phi = -psi + np.arctan2(-R[0][1], -R[0][2])
+    return phi, theta, psi
 
 def hat(omega):
     """

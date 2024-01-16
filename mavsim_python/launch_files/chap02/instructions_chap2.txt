@@ -4,10 +4,10 @@
   the textbook website""
 
 2.1 Read Appendix D and study carefully the spacecraft animation on the
-textbook website.
+textbook website. Located in mavsim_spacecraft.py, viewers/spacecraft_viewer.py, and viewers/draw_spacecraft.py
 
 2.2 Create an animation drawing of the aircraft shown in Figure 2.14.
-	- Complete each TODO section in the "draw_mav.py" file
+	- create viewers/mav_viewer.py and viewers/draw_mav.py patterned after the spacecraft example.
      
 2.3 Exercise your animation model by moving your aircraft through var-
 ious sequences of rotations and translations. Verify that your results

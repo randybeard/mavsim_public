@@ -3,14 +3,17 @@ mavsim_python: drawing tools
     - Beard & McLain, PUP, 2012
     - Update history:
         1/13/2021 - TWM
+        7/13/2023 - RWB
+        1/16/2024 - RWB
 """
 import numpy as np
 import pyqtgraph.opengl as gl
-from tools.rotations import Euler2Rotation
+from tools.rotations import euler_to_rotation
+from tools.drawing import rotate_points, translate_points, points_to_mesh
 
 
 class DrawSpacecraft:
-    def __init__(self, state, window):
+    def __init__(self, state, window, scale=10):
         """
         Draw the Spacecraft.
 
@@ -23,77 +26,93 @@ class DrawSpacecraft:
             state.theta  # pitch angle
             state.psi  # yaw angle
         """
-        # get points that define the non-rotated, non-translated spacecraft and the mesh colors
-        self.sc_points, self.sc_meshColors = self.get_points()
-
+        self.unit_length = scale
         sc_position = np.array([[state.north], [state.east], [-state.altitude]])  # NED coordinates
-        # attitude of spacecraft as a rotation matrix R from body to inertial
-        R = Euler2Rotation(state.phi, state.theta, state.psi)
-        # rotate and translate points defining spacecraft
-        rotated_points = self.rotate_points(self.sc_points, R)
-        translated_points = self.translate_points(rotated_points, sc_position)
-
-        # convert points to triangular mesh defined as array of three 3D points (Nx3x3)
-        mesh = self.points_to_mesh(translated_points)
-        self.sc_body = gl.GLMeshItem(vertexes=mesh,  # defines the triangular mesh (Nx3x3)
-                                      vertexColors=self.sc_meshColors,  # defines mesh colors (Nx1)
-                                      drawEdges=True,  # draw edges between mesh elements
-                                      smooth=False,  # speeds up rendering
-                                      computeNormals=False)  # speeds up rendering
-        window.addItem(self.sc_body)  # add body to plot
+        # attitude of mav as a rotation matrix R from body to inertial
+        R_bi = euler_to_rotation(state.phi, state.theta, state.psi)
+        # convert North-East Down to East-North-Up for rendering
+        self.R_ned = np.array([[0, 1, 0], [1, 0, 0], [0, 0, -1]])
+        # get points that define the non-rotated, non-translated spacecraft and the mesh colors
+        self.sc_points, self.sc_index, self.sc_meshColors = self.get_sc_points()
+        self.sc_body = self.add_object(
+            self.sc_points,
+            self.sc_index,
+            self.sc_meshColors,
+            R_bi,
+            sc_position)
+        window.addItem(self.sc_body)  # add spacecraft to plot     
 
     def update(self, state):
         sc_position = np.array([[state.north], [state.east], [-state.altitude]])  # NED coordinates
-        # attitude of spacecraft as a rotation matrix R from body to inertial
-        R = Euler2Rotation(state.phi, state.theta, state.psi)
-        # rotate and translate points defining spacecraft
-        rotated_points = self.rotate_points(self.sc_points, R)
-        translated_points = self.translate_points(rotated_points, sc_position)
-        # convert North-East Down to East-North-Up for rendering
-        R = np.array([[0, 1, 0], [1, 0, 0], [0, 0, -1]])
+        # attitude of mav as a rotation matrix R from body to inertial
+        R_bi = euler_to_rotation(state.phi, state.theta, state.psi)
+        self.sc_body = self.update_object(
+            self.sc_body,
+            self.sc_points,
+            self.sc_index,
+            self.sc_meshColors,
+            R_bi,
+            sc_position)
 
-        translated_points = R @ translated_points
+    def add_object(self, points, index, colors, R, position):
+        rotated_points = rotate_points(points, R)
+        translated_points = translate_points(rotated_points, position)
+        translated_points = self.R_ned @ translated_points
         # convert points to triangular mesh defined as array of three 3D points (Nx3x3)
-        mesh = self.points_to_mesh(translated_points)
-        # draw spacecraft by resetting mesh using rotated and translated points
-        self.sc_body.setMeshData(vertexes=mesh, vertexColors=self.sc_meshColors)
+        mesh = points_to_mesh(translated_points, index)
+        object = gl.GLMeshItem(
+            vertexes=mesh,  # defines the triangular mesh (Nx3x3)
+            vertexColors=colors,  # defines mesh colors (Nx1)
+            drawEdges=True,  # draw edges between mesh elements
+            smooth=False,  # speeds up rendering
+            computeNormals=False)  # speeds up rendering
+        return object
 
-    def rotate_points(self, points, R):
-        "Rotate points by the rotation matrix R"
-        rotated_points = R @ points
-        return rotated_points
+    def update_object(self, object, points, index, colors, R, position):
+        rotated_points = rotate_points(points, R)
+        translated_points = translate_points(rotated_points, position)
+        translated_points = self.R_ned @ translated_points
+        # convert points to triangular mesh defined as array of three 3D points (Nx3x3)
+        mesh = points_to_mesh(translated_points, index)
+        object.setMeshData(vertexes=mesh, vertexColors=colors)
+        return object
 
-    def translate_points(self, points, translation):
-        "Translate points by the vector translation"
-        translated_points = points + np.dot(translation, np.ones([1, points.shape[1]]))
-        return translated_points
-
-    def get_points(self):
+    def get_sc_points(self):
         """"
             Points that define the spacecraft, and the colors of the triangular mesh
             Define the points on the spacecraft following information in Appendix C.3
         """
-       
         # points are in XYZ coordinates
         #   define the points on the spacecraft according to Appendix C.3
-        points = np.array([[1, 1, 0],  # point 1 [0]
-                           [1, -1, 0],  # point 2 [1]
-                           [-1, -1, 0],  # point 3 [2]
-                           [-1, 1, 0],  # point 4 [3]
-                           [1, 1, -2],  # point 5 [4]
-                           [1, -1, -2],  # point 6 [5]
-                           [-1, -1, -2],  # point 7 [6]
-                           [-1, 1, -2],  # point 8 [7]
-                           [1.5, 1.5, 0],  # point 9 [8]
-                           [1.5, -1.5, 0],  # point 10 [9]
-                           [-1.5, -1.5, 0],  # point 11 [10]
-                           [-1.5, 1.5, 0]  # point 12 [11]
-                           ]).T
-
-        # scale points for better rendering
-        scale = 10
-        points = scale * points
-
+        points = self.unit_length * np.array([
+            [1, 1, 0],  # point 1 [0]
+            [1, -1, 0],  # point 2 [1]
+            [-1, -1, 0],  # point 3 [2]
+            [-1, 1, 0],  # point 4 [3]
+            [1, 1, -2],  # point 5 [4]
+            [1, -1, -2],  # point 6 [5]
+            [-1, -1, -2],  # point 7 [6]
+            [-1, 1, -2],  # point 8 [7]
+            [1.5, 1.5, 0],  # point 9 [8]
+            [1.5, -1.5, 0],  # point 10 [9]
+            [-1.5, -1.5, 0],  # point 11 [10]
+            [-1.5, 1.5, 0]  # point 12 [11]
+            ]).T
+        # point index that defines the mesh
+        index = np.array([
+            [0, 1, 5],  # front 1
+            [0, 5, 4],  # front 2
+            [3, 2, 6],  # back 1
+            [3, 6, 7],  # back 2
+            [0, 4, 7],  # right 1
+            [0, 7, 3],  # right 2
+            [1, 5, 6],  # left 1
+            [1, 6, 2],  # left 2
+            [4, 5, 6],  # top 1
+            [4, 6, 7],  # top 2
+            [8, 9, 10],  # bottom 1
+            [8, 10, 11],  # bottom 2  
+            ])
         #   define the colors for each face of triangular mesh
         red = np.array([1., 0., 0., 1])
         green = np.array([0., 1., 0., 1])
@@ -112,26 +131,5 @@ class DrawSpacecraft:
         meshColors[9] = red  # top 2
         meshColors[10] = green  # bottom 1
         meshColors[11] = green  # bottom 2
-        return points, meshColors
+        return points, index, meshColors
 
-    def points_to_mesh(self, points):
-        """"
-        Converts points to triangular mesh
-        Each mesh face is defined by three 3D points
-          (a rectangle requires two triangular mesh faces)
-        """
-        points = points.T
-        mesh = np.array([[points[0], points[1], points[5]],  # front 1
-                         [points[0], points[5], points[4]],  # front 2
-                         [points[3], points[2], points[6]],  # back 1
-                         [points[3], points[6], points[7]],  # back 2
-                         [points[0], points[4], points[7]],  # right 1
-                         [points[0], points[7], points[3]],  # right 2
-                         [points[1], points[5], points[6]],  # left 1
-                         [points[1], points[6], points[2]],  # left 2
-                         [points[4], points[5], points[6]],  # top 1
-                         [points[4], points[6], points[7]],  # top 2
-                         [points[8], points[9], points[10]],  # bottom 1
-                         [points[8], points[10], points[11]]  # bottom 2
-                         ])
-        return mesh
