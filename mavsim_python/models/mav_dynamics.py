@@ -7,14 +7,14 @@ mavsim_python
     - Beard & McLain, PUP, 2012
     - Update history:  
         2/24/2020 - RWB
+        7/13/2023 - RWB
+        1/17/2024 - RWB
 """
 import numpy as np
-
 # load message types
 from message_types.msg_state import MsgState
-from message_types.msg_delta import MsgDelta
 import parameters.aerosonde_parameters as MAV
-from tools.rotations import Quaternion2Rotation, Quaternion2Euler, Euler2Rotation
+from tools.rotations import quaternion_to_rotation, quaternion_to_euler
 
 class MavDynamics:
     def __init__(self, Ts):
@@ -43,7 +43,6 @@ class MavDynamics:
                                ])
         # initialize true_state message
         self.true_state = MsgState()
-
 
     ###################################
     # public functions
@@ -76,7 +75,6 @@ class MavDynamics:
 
         # update the message class for the true state
         self._update_true_state()
-
 
     def external_set_state(self, new_state):
         self._state = new_state
@@ -118,7 +116,7 @@ class MavDynamics:
     def _update_true_state(self):
         # update the class structure for the true state:
         #   [pn, pe, h, Va, alpha, beta, phi, theta, chi, p, q, r, Vg, wn, we, psi, gyro_bx, gyro_by, gyro_bz]
-        phi, theta, psi = Quaternion2Euler(self._state[6:10])
+        phi, theta, psi = quaternion_to_euler(self._state[6:10])
         self.true_state.north = self._state.item(0)
         self.true_state.east = self._state.item(1)
         self.true_state.altitude = -self._state.item(2)

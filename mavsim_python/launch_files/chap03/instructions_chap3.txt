@@ -3,7 +3,7 @@ through (3.17) of the textbook. Assume that the inputs are the forces and moment
 applied to the MAV in the body frame. Changeable parameters should
 include the mass, the moments and products of inertia, and the initial
 conditions for each state. Use the parameters given in appendix E.
-    - Implement the "derivatives()" function in "mav_dynamics_forces.py".
+    - Implement the "derivatives()" function in "mav_dynamics.py".
 
 3.2 Verify that the equations of motion are correct by individually set-
 ting the forces and moments along each axis to a nonzero value and

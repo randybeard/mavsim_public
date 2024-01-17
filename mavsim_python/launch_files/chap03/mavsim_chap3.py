@@ -10,7 +10,7 @@ mavsimPy
 import os, sys
 # insert parent directory at beginning of python search path
 from pathlib import Path
-sys.path.insert(0,os.fspath(Path(__file__).parents[1]))
+sys.path.insert(0,os.fspath(Path(__file__).parents[2]))
 # use QuitListener for Linux or PC <- doesn't work on Mac
 #from tools.quit_listener import QuitListener
 import numpy as np
@@ -19,7 +19,7 @@ import parameters.simulation_parameters as SIM
 from viewers.mav_viewer import MavViewer
 from viewers.data_viewer import DataViewer
 from message_types.msg_delta import MsgDelta
-from models.mav_dynamics_forces import MavDynamics
+from models.mav_dynamics import MavDynamics
 
 #quitter = QuitListener()
 
