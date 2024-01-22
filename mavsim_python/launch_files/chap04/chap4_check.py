@@ -5,7 +5,7 @@
 import os, sys
 # insert parent directory at beginning of python search path
 from pathlib import Path
-sys.path.insert(0,os.fspath(Path(__file__).parents[1]))
+sys.path.insert(0,os.fspath(Path(__file__).parents[2]))
 import numpy as np
 import parameters.simulation_parameters as SIM
 from models.mav_dynamics_control import MavDynamics
@@ -35,7 +35,7 @@ print("Mx: " , forcesAndMoments.item(3))
 print("My: " , forcesAndMoments.item(4))
 print("Mz: " , forcesAndMoments.item(5) , "\n\n")
 
-x_dot = mav._derivatives(mav._state, forcesAndMoments)
+x_dot = mav._f(mav._state, forcesAndMoments)
 print("State Derivatives : Case 1", "\n")
 print("north_dot: ", x_dot.item(0))
 print("east_dot: ", x_dot.item(1))
@@ -86,7 +86,7 @@ print("Mx: " , forcesAndMoments.item(3))
 print("My: " , forcesAndMoments.item(4))
 print("Mz: " , forcesAndMoments.item(5) , "\n\n")
 
-x_dot = mav._derivatives(mav._state, forcesAndMoments)
+x_dot = mav._f(mav._state, forcesAndMoments)
 print("State Derivatives : Case 2", "\n")
 print("north_dot: ", x_dot.item(0))
 print("east_dot: ", x_dot.item(1))
@@ -131,7 +131,7 @@ print("Mx: " , forcesAndMoments.item(3))
 print("My: " , forcesAndMoments.item(4))
 print("Mz: " , forcesAndMoments.item(5) , "\n\n")
 
-x_dot = mav._derivatives(mav._state, forcesAndMoments)
+x_dot = mav._f(mav._state, forcesAndMoments)
 print("State Derivatives : Case w/Wind", "\n")
 print("north_dot: ", x_dot.item(0))
 print("east_dot: ", x_dot.item(1))

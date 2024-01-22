@@ -10,9 +10,9 @@ mavsimPy
 import os, sys
 # insert parent directory at beginning of python search path
 from pathlib import Path
-sys.path.insert(0,os.fspath(Path(__file__).parents[1]))
+sys.path.insert(0,os.fspath(Path(__file__).parents[2]))
 # use QuitListener for Linux or PC <- doesn't work on Mac
-#from tools.quit_listener import QuitListener
+#from python_tools.quit_listener import QuitListener
 import pyqtgraph as pg
 import parameters.simulation_parameters as SIM
 from models.mav_dynamics_control import MavDynamics
@@ -81,7 +81,7 @@ while sim_time < end_time:
     if VIDEO is True:
         video.update(sim_time)
         
-    # -------Check to Quit the Loop-------
+    # # -------Check to Quit the Loop-------
     # if quitter.check_quit():
     #     break
 

@@ -10,7 +10,7 @@ mavsimPy
 import os, sys
 # insert parent directory at beginning of python search path
 from pathlib import Path
-sys.path.insert(0,os.fspath(Path(__file__).parents[1]))
+sys.path.insert(0,os.fspath(Path(__file__).parents[2]))
 # use QuitListener for Linux or PC <- doesn't work on Mac
 #from python_tools.quit_listener import QuitListener
 import pyqtgraph as pg
