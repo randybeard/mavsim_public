@@ -14,7 +14,6 @@ from models.wind_simulation import WindSimulation
 
 wind = WindSimulation(SIM.ts_simulation)
 mav = MavDynamics(SIM.ts_simulation)
-
 delta = MsgDelta()
 delta.elevator = -0.2
 delta.aileron = 0.0

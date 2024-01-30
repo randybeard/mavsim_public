@@ -6,7 +6,7 @@ compute_ss_model
 """
 import numpy as np
 from scipy.optimize import minimize
-from tools.rotations import Euler2Quaternion, Quaternion2Euler
+from tools.rotations import euler_to_quaternion, quaternion_to_euler
 import parameters.aerosonde_parameters as MAV
 from parameters.simulation_parameters import ts_simulation as Ts
 from message_types.msg_delta import MsgDelta
@@ -19,7 +19,7 @@ def compute_model(mav, trim_state, trim_input):
     a_V1, a_V2, a_V3 = compute_tf_model(mav, trim_state, trim_input)
 
     # write transfer function gains to file
-    file = open('model_coef.py', 'w')
+    file = open('models/model_coef.py', 'w')
     file.write('import numpy as np\n')
     file.write('x_trim = np.array([[%f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f]]).T\n' %
                (trim_state.item(0), trim_state.item(1), trim_state.item(2), trim_state.item(3),
@@ -89,7 +89,7 @@ def compute_tf_model(mav, trim_state, trim_input):
     mav._update_velocity_data()
     Va_trim = mav._Va
     alpha_trim = mav._alpha
-    phi, theta_trim, psi = Quaternion2Euler(trim_state[6:10])
+    phi, theta_trim, psi = quaternion_to_euler(trim_state[6:10])
 
     ###### TODO ######
     # define transfer function constants
@@ -144,8 +144,8 @@ def f_euler(mav, x_euler, delta):
     # compute f at euler_state, f_euler will be f, except for the attitude states
 
     # need to correct attitude states by multiplying f by
-    # partial of Quaternion2Euler(quat) with respect to quat
-    # compute partial Quaternion2Euler(quat) with respect to quat
+    # partial of quaternion_to_euler(quat) with respect to quat
+    # compute partial quaternion_to_euler(quat) with respect to quat
     # dEuler/dt = dEuler/dquat * dquat/dt
     x_quat = quaternion_state(x_euler)
     mav._state = x_quat
