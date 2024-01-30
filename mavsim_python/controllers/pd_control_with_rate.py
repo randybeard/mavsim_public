@@ -4,7 +4,6 @@ pid_control
     - Last Update:
         2/6/2019 - RWB
 """
-import numpy as np
 
 
 class PDControlWithRate:

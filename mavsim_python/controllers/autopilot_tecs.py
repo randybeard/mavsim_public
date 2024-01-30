@@ -9,8 +9,8 @@ import parameters.control_parameters as AP
 import parameters.aerosonde_parameters as MAV
 from tools.transfer_function import TransferFunction
 from tools.wrap import wrap
-from control.pi_control import PIControl
-from control.pd_control_with_rate import PDControlWithRate
+from controllers.pi_control import PIControl
+from controllers.pd_control_with_rate import PDControlWithRate
 from message_types.msg_state import MsgState
 from message_types.msg_delta import MsgDelta
 

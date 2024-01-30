@@ -8,9 +8,9 @@ import numpy as np
 import parameters.control_parameters as AP
 # from tools.transfer_function import TransferFunction
 from tools.wrap import wrap
-from control.pi_control import PIControl
-from control.pd_control_with_rate import PDControlWithRate
-from control.tf_control import TFControl
+from controllers.pi_control import PIControl
+from controllers.pd_control_with_rate import PDControlWithRate
+from controllers.tf_control import TFControl
 from message_types.msg_state import MsgState
 from message_types.msg_delta import MsgDelta
 
