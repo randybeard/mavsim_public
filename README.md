@@ -50,8 +50,12 @@ The template files in this github account are provided to help students with the
 * [YouTube video showing solution for Chapter 11.](http://youtu.be/aGAdjbtSoso)
 * [YouTube video showing solution for Chapter 12.](http://youtu.be/bdYb45bpID4)
 
-## Supplemental Material
+## GitHub Repo
+These slides show how to make a private clone of a public repo, where you can receive any updates that I push to the repo during the semester, but still retain your work.
 
+[Making a Private Clone of a Public Repo](https://docs.google.com/presentation/d/1jM8l60zxCz6fXc8nazA9Ga1VEDKxEIk6iM6ivEwhLlI/edit?usp=sharing)
+
+## Supplemental Material
 Our intention is to occasionally add supplemental material to this page.  We would also welcome contributions from the broader community.  If you are interested in adding material, please contact the authors. 
 
 * **Adaptation of MavSim to Underwater Vehicles**
