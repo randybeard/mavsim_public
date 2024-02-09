@@ -9,7 +9,7 @@ mavsim_python
 import os, sys
 # insert parent directory at beginning of python search path
 from pathlib import Path
-sys.path.insert(0,os.fspath(Path(__file__).parents[1]))
+sys.path.insert(0,os.fspath(Path(__file__).parents[2]))
 # use QuitListener for Linux or PC <- doesn't work on Mac
 #from tools.quit_listener import QuitListener
 import numpy as np
@@ -18,7 +18,7 @@ import pyqtgraph as pg
 from tools.signals import Signals
 from models.mav_dynamics_sensors import MavDynamics
 from models.wind_simulation import WindSimulation
-from control.autopilot import Autopilot
+from controllers.autopilot import Autopilot
 from viewers.mav_viewer import MavViewer
 from viewers.data_viewer import DataViewer
 from viewers.sensor_viewer import SensorViewer
@@ -114,9 +114,9 @@ while sim_time < end_time:
     if VIDEO is True:
         video.update(sim_time)
         
-    # -------Check to Quit the Loop-------
-    if quitter.check_quit():
-        break
+    # # -------Check to Quit the Loop-------
+    # if quitter.check_quit():
+    #     break
 
     # -------increment time-------------
     sim_time += SIM.ts_simulation
