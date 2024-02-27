@@ -27,17 +27,17 @@ class Autopilot:
                         ki=AP.course_ki,
                         Ts=ts_control,
                         limit=np.radians(30))
-        # self.yaw_damper = TransferFunction(
-        #                 num=np.array([[AP.yaw_damper_kr, 0]]),
-        #                 den=np.array([[1, AP.yaw_damper_p_wo]]),
-        #                 Ts=ts_control)
-        self.yaw_damper = TFControl(
-                        k=AP.yaw_damper_kr,
-                        n0=0.0,
-                        n1=1.0,
-                        d0=AP.yaw_damper_p_wo,
-                        d1=1,
+        self.yaw_damper = TransferFunction(
+                        num=np.array([[AP.yaw_damper_kr, 0]]),
+                        den=np.array([[1, AP.yaw_damper_p_wo]]),
                         Ts=ts_control)
+        # self.yaw_damper = TFControl(
+        #                 k=AP.yaw_damper_kr,
+        #                 n0=0.0,
+        #                 n1=1.0,
+        #                 d0=AP.yaw_damper_p_wo,
+        #                 d1=1,
+        #                 Ts=ts_control)
 
         # instantiate longitudinal controllers
         self.pitch_from_elevator = PDControlWithRate(
