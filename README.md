@@ -17,13 +17,13 @@ The following lecture materials are included as a resource for instructors.  The
 | Chapter | PDF Slides | Powerpoint | Last Modified |
 |---------|------------|------------|----------|
 | Chapter 1 - Introduction | [chap1.pdf](https://drive.google.com/file/d/1BgkuPdWmuBEjq4wjoKsQt478QV647QF1/view?usp=sharing) | [chap1.pptx](https://docs.google.com/presentation/d/1069hP_fnDPJ7n0Yn9XWzCKAQD9GAdNtp/edit?usp=sharing&ouid=115325376918178448854&rtpof=true&sd=true) | 4/4/2022  |
-| Chapter 2 - Coordinate Frames | [chap2.pdf](https://drive.google.com/file/d/1BhIit4UtQw8ZNq0OuVPiBfhZjbGl2vAM/view?usp=sharing) | [chap2.pptx](https://docs.google.com/presentation/d/1BNcvtAA3_X0Et8xZiMOweiBR8-C3c6Ze/edit?usp=sharing&ouid=115325376918178448854&rtpof=true&sd=true) | 1/11/2019  |
-| Chapter 3 - Kinematics and Dynamics | [chap3.pdf](https://drive.google.com/file/d/1BOwGqoJ2WjiIUYDA8p77TGwV-Ttrd4hc/view?usp=sharing) | [chap3.pptx](https://docs.google.com/presentation/d/1BQsToiKlEMoJvgGMwaeCR74O0-SWdaxs/edit?usp=sharing&ouid=115325376918178448854&rtpof=true&sd=true) | 1/18/2024 |
-| Chapter 4 - Forces and Moments | [chap4.pdf](https://drive.google.com/file/d/1BjJuj8QLWV9E1FX6sHVHXIGaIizUaAJ5/view?usp=sharing) | [chap4.pptx](https://docs.google.com/presentation/d/1BQUoSlMYmB1Ni-PPFfyMbsSvPC_z26av/edit?usp=sharing&ouid=115325376918178448854&rtpof=true&sd=true)  | 1/21/2022 |
-| Chapter 5 - Linear Design Models | [chap5.pdf](https://drive.google.com/file/d/1BRS8PaOMrFdotGgb7oXOZloANh3fzUAo/view?usp=sharing) | [chap5.pptx](https://docs.google.com/presentation/d/1BfpnwWnK5A31pZdNu3rZ48Nu3AefLnfk/edit?usp=sharing&ouid=115325376918178448854&rtpof=true&sd=true)  | 2/10/2022 |
-| Chapter 6 - Autopilot Design | [chap6.pdf](https://drive.google.com/file/d/1BfLD2KDyalXuANrA14RC29EWIw3xF4fU/view?usp=sharing) | [chap6.pptx](https://docs.google.com/presentation/d/1BPBHWl0PiHGs43uYlk_qiRLSvKXZrx9G/edit?usp=sharing&ouid=115325376918178448854&rtpof=true&sd=true)  | 2/10/2022 |
-| Chapter 7 - Sensors | [chap7.pdf](https://drive.google.com/file/d/1BMceIPDGzBda9w5R5LrNnouabS8lQ9s_/view?usp=sharing) | [chap7.pptx](https://docs.google.com/presentation/d/1BRVcewET8_s5urj7NmXIDZUsrej0kvDw/edit?usp=sharing&ouid=115325376918178448854&rtpof=true&sd=true)  | 2/14/2022 |
-| Chapter 8 - State Estimation | [chap8.pdf](https://drive.google.com/file/d/1BSbH_F7KbP4tnSOwurSScwoVGsrTmHpg/view?usp=sharing) | [chap8.pptx](https://docs.google.com/presentation/d/1BSgBhzfr4RhCdZn-HX4v3pY1bCLp5YC0/edit?usp=sharing&ouid=115325376918178448854&rtpof=true&sd=true)  | 2/27/2022 |
+| Chapter 2 - Coordinate Frames | [chap2.pdf](https://drive.google.com/file/d/1BhIit4UtQw8ZNq0OuVPiBfhZjbGl2vAM/view?usp=sharing) | [chap2.pptx](https://docs.google.com/presentation/d/1BNcvtAA3_X0Et8xZiMOweiBR8-C3c6Ze/edit?usp=sharing&ouid=115325376918178448854&rtpof=true&sd=true) | 1/2024  |
+| Chapter 3 - Kinematics and Dynamics | [chap3.pdf](https://drive.google.com/file/d/1BOwGqoJ2WjiIUYDA8p77TGwV-Ttrd4hc/view?usp=sharing) | [chap3.pptx](https://docs.google.com/presentation/d/1BQsToiKlEMoJvgGMwaeCR74O0-SWdaxs/edit?usp=sharing&ouid=115325376918178448854&rtpof=true&sd=true) | 1/2024 |
+| Chapter 4 - Forces and Moments | [chap4.pdf](https://drive.google.com/file/d/1BjJuj8QLWV9E1FX6sHVHXIGaIizUaAJ5/view?usp=sharing) | [chap4.pptx](https://docs.google.com/presentation/d/1BQUoSlMYmB1Ni-PPFfyMbsSvPC_z26av/edit?usp=sharing&ouid=115325376918178448854&rtpof=true&sd=true)  | 1/2024 |
+| Chapter 5 - Linear Design Models | [chap5.pdf](https://drive.google.com/file/d/1BRS8PaOMrFdotGgb7oXOZloANh3fzUAo/view?usp=sharing) | [chap5.pptx](https://docs.google.com/presentation/d/1BfpnwWnK5A31pZdNu3rZ48Nu3AefLnfk/edit?usp=sharing&ouid=115325376918178448854&rtpof=true&sd=true)  | 2/2024 |
+| Chapter 6 - Autopilot Design | [chap6.pdf](https://drive.google.com/file/d/1BfLD2KDyalXuANrA14RC29EWIw3xF4fU/view?usp=sharing) | [chap6.pptx](https://docs.google.com/presentation/d/1BPBHWl0PiHGs43uYlk_qiRLSvKXZrx9G/edit?usp=sharing&ouid=115325376918178448854&rtpof=true&sd=true)  | 2/2024 |
+| Chapter 7 - Sensors | [chap7.pdf](https://drive.google.com/file/d/1BMceIPDGzBda9w5R5LrNnouabS8lQ9s_/view?usp=sharing) | [chap7.pptx](https://docs.google.com/presentation/d/1BRVcewET8_s5urj7NmXIDZUsrej0kvDw/edit?usp=sharing&ouid=115325376918178448854&rtpof=true&sd=true)  | 2/2024 |
+| Chapter 8 - State Estimation | [chap8.pdf](https://drive.google.com/file/d/1BSbH_F7KbP4tnSOwurSScwoVGsrTmHpg/view?usp=sharing) | [chap8.pptx](https://docs.google.com/presentation/d/1BSgBhzfr4RhCdZn-HX4v3pY1bCLp5YC0/edit?usp=sharing&ouid=115325376918178448854&rtpof=true&sd=true)  | 2/2024 |
 | Chapter 9 - Nonlinear Design Models | [chap9.pdf](https://drive.google.com/file/d/1BelIP25e4QFLps4Rr49jyzP1maox328C/view?usp=sharing) | [chap9.pptx](https://docs.google.com/presentation/d/1BiQW_uHnIt9JfBFo4hMPqclEEbza7HVL/edit?usp=sharing&ouid=115325376918178448854&rtpof=true&sd=true)  | 11/4/2014 |
 | Chapter 10 - Waypoint and Orbit Following | [chap10.pdf](https://drive.google.com/file/d/1BLu3HMqT8-OW1ys-xyoZup_wtSX_v3bq/view?usp=sharing) | [chap10.pptx](https://docs.google.com/presentation/d/1-ZHy0ZFqL6NHSczAFKX2qdaY6gI8CPBF/edit?usp=sharing&ouid=115325376918178448854&rtpof=true&sd=true)  | 3/11/2022 |
 | Chapter 11 - Path Manager | [chap11.pdf](https://drive.google.com/file/d/1BhtShrqNmy14c7k_R0Ayn-kW8IyZ1Jc3/view?usp=sharing) | [chap11.pptx](https://docs.google.com/presentation/d/1BUhwTIXyWRpKR8hPGnqNi7Z8tHGEC3pY/edit?usp=sharing&ouid=115325376918178448854&rtpof=true&sd=true)  | 03/21/2022 |
@@ -57,6 +57,9 @@ These slides show how to make a private clone of a public repo, where you can re
 
 ## Supplemental Material
 Our intention is to occasionally add supplemental material to this page.  We would also welcome contributions from the broader community.  If you are interested in adding material, please contact the authors. 
+
+* **Aerodynamic Forces Acting on an Airfoil**
+    * [https://ciechanow.ski/airfoil/](https://ciechanow.ski/airfoil/)
 
 * **Adaptation of MavSim to Underwater Vehicles**
     * [Underwater simulator](https://bitbucket.org/jfarrant/python_fixedwing_mavsim)
