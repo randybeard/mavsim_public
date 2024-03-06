@@ -72,11 +72,20 @@ class EkfAttitude:
     # implement continous-discrete EKF to estimate roll and pitch angles
     def __init__(self, ts):
         ##### TODO #####
-        self.Q = np.diag([0, 0])
-        self.P = np.diag([0, 0])
-        self.xhat = np.array([[0.0], [0.0]]) # initial state: phi, theta
-        self.Q_gyro = np.diag([0, 0, 0])
-        self.R_accel = np.diag([0, 0, 0])
+        self.Q = np.diag([
+            0**2, # phi 
+            0**2, # theta
+            ])
+        self.P = np.diag([
+            0**2, # phi
+            0**2, # theta
+            ])
+        self.xhat = np.array([
+            [0.0], # phi 
+            [0.0], # theta
+            ]) # initial state: phi, theta
+        self.Q_gyro = np.diag([0**2, 0**2, 0**2])
+        self.R_accel = np.diag([0**2, 0**2, 0**2])
         self.N = 5  # number of prediction step per sample
         self.Ts = ts/self.N
         self.gate_threshold = 0 #stats.chi2.isf(q=?, df=?)
