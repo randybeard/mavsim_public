@@ -14,11 +14,9 @@ from message_types.msg_state import MsgState
 from message_types.msg_sensors import MsgSensors
 
 class Observer:
-    def __init__(self, ts_control, initial_measurements = MsgSensors()):
+    def __init__(self, ts, initial_measurements = MsgSensors()):
         # initialized estimated state message
         self.estimated_state = MsgState()
-        # use alpha filters to low pass filter gyros and accels
-        # alpha = Ts/(Ts + tau) where tau is the LPF time constant
 
         ##### TODO #####
         self.lpf_gyro_x = AlphaFilter(alpha=0, y0=initial_measurements.gyro_x)
@@ -31,9 +29,9 @@ class Observer:
         self.lpf_abs = AlphaFilter(alpha=0, y0=initial_measurements.abs_pressure)
         self.lpf_diff = AlphaFilter(alpha=0, y0=initial_measurements.diff_pressure)
         # ekf for phi and theta
-        self.attitude_ekf = EkfAttitude()
+        self.attitude_ekf = EkfAttitude(ts)
         # ekf for pn, pe, Vg, chi, wn, we, psi
-        self.position_ekf = EkfPosition()
+        self.position_ekf = EkfPosition(ts)
 
     def update(self, measurement):
         ##### TODO #####
@@ -41,17 +39,13 @@ class Observer:
         self.estimated_state.p = 0
         self.estimated_state.q = 0
         self.estimated_state.r = 0
-
         # invert sensor model to get altitude and airspeed
         self.estimated_state.altitude = 0
         self.estimated_state.Va = 0
-
         # estimate phi and theta with simple ekf
         self.attitude_ekf.update(measurement, self.estimated_state)
-
         # estimate pn, pe, Vg, chi, wn, we, psi
         self.position_ekf.update(measurement, self.estimated_state)
-
         # not estimating these
         self.estimated_state.alpha = 0.0
         self.estimated_state.beta = 0.0
@@ -76,15 +70,15 @@ class AlphaFilter:
 
 class EkfAttitude:
     # implement continous-discrete EKF to estimate roll and pitch angles
-    def __init__(self):
+    def __init__(self, ts):
         ##### TODO #####
         self.Q = np.diag([0, 0])
+        self.P = np.diag([0, 0])
+        self.xhat = np.array([[0.0], [0.0]]) # initial state: phi, theta
         self.Q_gyro = np.diag([0, 0, 0])
         self.R_accel = np.diag([0, 0, 0])
-        self.N = 1  # number of prediction step per sample
-        self.xhat = np.array([[0.0], [0.0]]) # initial state: phi, theta
-        self.P = np.diag([0, 0])
-        self.Ts = SIM.ts_control/self.N
+        self.N = 5  # number of prediction step per sample
+        self.Ts = ts/self.N
         self.gate_threshold = 0 #stats.chi2.isf(q=?, df=?)
 
     def update(self, measurement, state):
@@ -96,16 +90,16 @@ class EkfAttitude:
     def f(self, x, measurement, state):
         # system dynamics for propagation model: xdot = f(x, u)
         ##### TODO #####
-        f_ = np.zeros((2,1))
-        return f_
+        xdot = np.zeros((2,1))
+        return xdot
 
     def h(self, x, measurement, state):
-        # measurement model y
+        # measurement model y=h(x,u)
         ##### TODO #####
-        h_ = np.array([[0],  # x-accel
+        y = np.array([[0],  # x-accel
                         [0],# y-accel
                         [0]])  # z-accel
-        return h_
+        return y
 
     def propagate_model(self, measurement, state):
         # model propagation
@@ -116,43 +110,59 @@ class EkfAttitude:
 
     def measurement_update(self, measurement, state):
         # measurement updates
-        h = self.h(self.xhat, measurement, state)
+        yhat = self.h(self.xhat, measurement, state)
         C = jacobian(self.h, self.xhat, measurement, state)
         y = np.array([[measurement.accel_x, measurement.accel_y, measurement.accel_z]]).T
 
         ##### TODO #####
         S_inv = np.zeros((3,3))
-        if (y-h).T @ S_inv @ (y-h) < self.gate_threshold:
+        if True: #(y-yhat).T @ S_inv @ (y-yhat) < self.gate_threshold:
             self.P = np.zeros((2,2))
             self.xhat = np.zeros((2,1))
 
 
 class EkfPosition:
     # implement continous-discrete EKF to estimate pn, pe, Vg, chi, wn, we, psi
-    def __init__(self):
+    def __init__(self, ts):
         self.Q = np.diag([
-                    0,  # pn
-                    0,  # pe
-                    0,  # Vg
-                    0, # chi
-                    0, # wn
-                    0, # we
-                    0, #0.0001, # psi
+                    0**2, # pn
+                    0**2, # pe
+                    0**2, # Vg
+                    0**2, # chi
+                    0**2, # wn
+                    0**2, # we
+                    0**2, # psi
                     ])
+        self.P = np.diag([
+                    0**2, # pn
+                    0**2, # pe
+                    0**2, # Vg
+                    0**2, # chi
+                    0**2, # wn
+                    0**2, # we
+                    0**2, # psi
+                    ])
+        self.xhat = np.array([
+            [0.0], # pn
+            [0.0], # pe
+            [0.0], # Vg
+            [0.0], # chi
+            [0.0], # wn
+            [0.0], # we
+            [0.0], # psi
+            ])
         self.R_gps = np.diag([
-                    0,  # y_gps_n
-                    0,  # y_gps_e
-                    0,  # y_gps_Vg
-                    0,  # y_gps_course
+                    0**2,  # y_gps_n
+                    0**2,  # y_gps_e
+                    0**2,  # y_gps_Vg
+                    0**2,  # y_gps_course
                     ])
         self.R_pseudo = np.diag([
-                    0,  # pseudo measurement #1
-                    0,  # pseudo measurement #2
+                    0**2,  # pseudo measurement #1
+                    0**2,  # pseudo measurement #2
                     ])
         self.N = 1  # number of prediction step per sample
-        self.Ts = (SIM.ts_control / self.N)
-        self.xhat = np.array([[0.0], [0.0], [0.0], [0.0], [0.0], [0.0], [0.0]])
-        self.P = np.diag([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+        self.Ts = ts / self.N
         self.gps_n_old = 0
         self.gps_e_old = 0
         self.gps_Vg_old = 0
@@ -173,7 +183,7 @@ class EkfPosition:
 
     def f(self, x, measurement, state):
         # system dynamics for propagation model: xdot = f(x, u)
-        f_ = np.array([[0],
+        xdot = np.array([[0],
                        [0],
                        [0],
                        [0],
@@ -181,25 +191,25 @@ class EkfPosition:
                        [0.0],
                        [0],
                        ])
-        return f_
+        return xdot
 
     def h_gps(self, x, measurement, state):
-        # measurement model for gps measurements
-        h_ = np.array([
+        # measurement model for gps measurements y=h(x,u)
+        y = np.array([
             [0], #pn
             [0], #pe
             [0], #Vg
             [0], #chi
         ])
-        return h_
+        return y
 
     def h_pseudo(self, x, measurement, state):
-        # measurement model for wind triangale pseudo measurement
-        h_ = np.array([
+        # measurement model for wind triangale pseudo measurement y=h(x,u)
+        y = np.array([
             [0],  # wind triangle x
             [0],  # wind triangle y
         ])
-        return h_
+        return y
 
     def propagate_model(self, measurement, state):
         # model propagation
@@ -216,11 +226,11 @@ class EkfPosition:
 
     def measurement_update(self, measurement, state):
         # always update based on wind triangle pseudo measurement
-        h = self.h_pseudo(self.xhat, measurement, state)
+        yhat = self.h_pseudo(self.xhat, measurement, state)
         C = jacobian(self.h_pseudo, self.xhat, measurement, state)
         y = np.array([[0, 0]]).T
         S_inv = np.zeros((2,2))
-        if (y-h).T @ S_inv @ (y-h) < self.pseudo_threshold:
+        if True: #(y-yhat).T @ S_inv @ (y-yhat) < self.pseudo_threshold:
             self.P = np.zeros((7,7))
             self.xhat = np.zeros((7,1))
 
@@ -230,15 +240,15 @@ class EkfPosition:
             or (measurement.gps_Vg != self.gps_Vg_old) \
             or (measurement.gps_course != self.gps_course_old):
 
-            h = self.h_gps(self.xhat, measurement, state)
+            yhat = self.h_gps(self.xhat, measurement, state)
             C = jacobian(self.h_gps, self.xhat, measurement, state)
-            y_chi = wrap(measurement.gps_course, h[3, 0])
+            y_chi = wrap(measurement.gps_course, yhat[3, 0])
             y = np.array([[measurement.gps_n,
                            measurement.gps_e,
                            measurement.gps_Vg,
                            y_chi]]).T
             S_inv = np.zeros((4,4))
-            if (y-h).T @ S_inv @ (y-h) < self.gps_threshold:
+            if True: #(y-yhat).T @ S_inv @ (y-yhat) < self.gps_threshold:
                 self.P = np.zeros((7,7))
                 self.xhat = np.zeros((7,1))
 
