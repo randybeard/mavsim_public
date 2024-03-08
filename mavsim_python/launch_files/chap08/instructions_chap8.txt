@@ -1,0 +1,23 @@
+MODIFIED MATERIAL:
+
+    - implement the "observer.py" file.
+
+8.1 Implement the simple schemes described in section 8.3 using low-pass
+filters and model inversion to estimate the states p n , p e , h, V a , φ, θ, χ,
+p, q, and r. Tune the bandwidth of the low-pass filter to observe the
+effect. Different states may require a different filter bandwidth.
+
+8.2 Modify the observer file to implement the extended Kalman filter for
+roll and pitch angles described in section 8.9. Tune the filter until you
+are satisfied with the performance.
+
+8.3 Modify the observer file to implement the extended Kalman filter for
+position, heading, and wind described in section 8.10. Tune the filter
+until you are satisfied with the performance.
+
+8.4 Change the simulation to use the estimated state in the autopilot as
+opposed to the true states. Tune autopilot and estimator gains if neces-
+sary. By changing the bandwidth of the low-pass filter, note that the
+stability of the closed loop system is heavily influenced by this value.
+
+ - Demonstrate or record your working estimator.
