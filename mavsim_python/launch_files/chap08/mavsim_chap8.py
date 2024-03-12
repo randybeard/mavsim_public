@@ -6,6 +6,7 @@ mavsim_python
         2/24/2020 - RWB
         1/5/2023 - David L. Christiansen
         7/13/2023 - RWB
+        3/11/2024 - RWB
 """
 import os, sys
 # insert parent directory at beginning of python search path
@@ -14,7 +15,6 @@ sys.path.insert(0,os.fspath(Path(__file__).parents[2]))
 # use QuitListener for Linux or PC <- doesn't work on Mac
 #from tools.quit_listener import QuitListener
 import numpy as np
-import pyqtgraph as pg
 import parameters.simulation_parameters as SIM
 from tools.signals import Signals
 from models.mav_dynamics_sensors import MavDynamics
@@ -23,43 +23,16 @@ from controllers.autopilot import Autopilot
 #from controllers.lqr_with_rate_damping import Autopilot
 from estimators.observer import Observer
 #from estimators.observer_full import Observer
-from viewers.mav_viewer import MavViewer
-from viewers.data_viewer import DataViewer
-from viewers.sensor_viewer import SensorViewer
+from viewers.manage_viewers import Viewers
 
 #quitter = QuitListener()
-
-VIDEO = False
-DATA_PLOTS = True
-SENSOR_PLOTS = False
-ANIMATION = True
-SAVE_PLOT_IMAGE = False
-COMPUTE_MODEL = False
-
-# video initialization
-if VIDEO is True:
-    from viewers.video_writer import VideoWriter
-    video = VideoWriter(video_name="chap8_video.avi",
-                        bounding_box=(0, 0, 1000, 1000),
-                        output_rate=SIM.ts_video)
-
-#initialize the visualization
-if ANIMATION or DATA_PLOTS or SENSOR_PLOTS:
-    app = pg.QtWidgets.QApplication([]) # use the same main process for Qt applications
-if ANIMATION:
-    mav_view = MavViewer(app=app)  # initialize the mav viewer
-if DATA_PLOTS:
-    data_view = DataViewer(app=app,dt=SIM.ts_simulation, plot_period=SIM.ts_plot_refresh, 
-                           data_recording_period=SIM.ts_plot_record_data, time_window_length=30)
-if SENSOR_PLOTS:
-    sensor_view = SensorViewer(app=app,dt=SIM.ts_simulation, plot_period=SIM.ts_plot_refresh, 
-                           data_recording_period=SIM.ts_plot_record_data, time_window_length=30)
 
 # initialize elements of the architecture
 wind = WindSimulation(SIM.ts_simulation)
 mav = MavDynamics(SIM.ts_simulation)
 autopilot = Autopilot(SIM.ts_simulation)
 observer = Observer(SIM.ts_simulation)
+viewers = Viewers(animation=True, data=True)
 
 # autopilot commands
 from message_types.msg_autopilot import MsgAutopilot
@@ -101,20 +74,14 @@ while sim_time < end_time:
     mav.update(delta, current_wind)  # propagate the MAV dynamics
 
     # -------- update viewer -------------
-    if ANIMATION:
-        mav_view.update(mav.true_state)  # plot body of MAV
-    if DATA_PLOTS:
-        plot_time = sim_time
-        data_view.update(mav.true_state,  # true states
-                         estimated_state,  # estimated states
-                         None,  # commanded states
-                         delta)  # inputs to aircraft
-    if SENSOR_PLOTS:
-        sensor_view.update(measurements)
-    if ANIMATION or DATA_PLOTS or SENSOR_PLOTS:
-        app.processEvents()
-    if VIDEO is True:
-        video.update(sim_time)
+    viewers.update(
+        sim_time,
+        mav.true_state,  # true states
+        estimated_state,  # estimated states
+        commanded_state,  # commanded states
+        delta,  # inputs to aircraft
+        None,  # measurements
+    )
         
     # -------Check to Quit the Loop-------
     # if quitter.check_quit():
@@ -123,15 +90,12 @@ while sim_time < end_time:
     # -------increment time-------------
     sim_time += SIM.ts_simulation
 
-# Save an Image of the Plot
-if SAVE_PLOT_IMAGE:
-    if DATA_PLOTS:
-        data_view.save_plot_image("ch8_data_plot")
-    if SENSOR_PLOTS:
-        sensor_view.save_plot_image("ch8_sensor_plot")
+# close viewers
+viewers.close(dataplot_name="ch8_data_plot", 
+              sensorplot_name="ch8_sensor_plot")
 
-if VIDEO is True:
-    video.close()
+
+
 
 
 

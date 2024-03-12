@@ -14,23 +14,13 @@ from pathlib import Path
 sys.path.insert(0,os.fspath(Path(__file__).parents[2]))
 # use QuitListener for Linux or PC <- doesn't work on Mac
 #from python_tools.quit_listener import QuitListener
-import pyqtgraph as pg
 import parameters.simulation_parameters as SIM
-from viewers.mav_viewer import MavViewer
 from message_types.msg_state import MsgState
+from viewers.manage_viewers import Viewers
 
-#quitter = QuitListener()
-VIDEO = False
-if VIDEO is True:
-    from viewers.video_writer import VideoWriter
-    video = VideoWriter(video_name="chap2_video.avi",
-                        bounding_box=(0, 0, 1000, 1000),
-                        output_rate=SIM.ts_video)
-# initialize the visualization
-app = pg.QtWidgets.QApplication([])
-mav_view = MavViewer(app=app)  # initialize the mav viewer
-# initialize elements of the architecture
+# #quitter = QuitListener()
 state = MsgState()
+viewers = viewers = Viewers(animation=True)
 
 # initialize the simulation time
 sim_time = SIM.start_time
@@ -56,8 +46,14 @@ while sim_time < end_time:
     else:
         state.phi += 0.1*SIM.ts_simulation
     # -------update viewer and video-------------
-    mav_view.update(state)
-    mav_view.process_app()
+    viewers.update(
+        sim_time,
+        state,  # true states
+        None,  # estimated states
+        None,  # commanded states
+        None,  # inputs to aircraft
+        None,  # measurements
+    )
 
     # -------increment time-------------
     sim_time += SIM.ts_simulation
@@ -65,13 +61,8 @@ while sim_time < end_time:
     if motions_time >= time_per_motion*6:
         motions_time = 0
 
-    # -------update video---------------
-    if VIDEO is True:
-        video.update(sim_time)
-    
     # # -------Check to Quit the Loop-------
     # if quitter.check_quit():
     #     break
 
-if VIDEO is True:
-    video.update(sim_time)
+viewers.close()
