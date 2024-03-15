@@ -4,15 +4,17 @@ mavsim_python: path viewer (for chapter 10)
     - Update history:
         4/15/2019 - BGM
         3/30/2020 - RWB
+        7/13/2023 - RWB
 """
 import numpy as np
-import pyqtgraph as pg
 import pyqtgraph.opengl as gl
 from viewers.draw_mav import DrawMav
 from viewers.draw_path import DrawPath
+from message_types.msg_state import MsgState
+from message_types.msg_path import MsgPath
 
 
-class MAVAndPathViewer:
+class MavAndPathViewer:
     def __init__(self, app):
         self.scale = 2000
         # initialize Qt gui application and window
@@ -37,7 +39,10 @@ class MAVAndPathViewer:
         self.mav_plot = []
         self.path_plot = []
 
-    def update(self, state, path):
+    def update(self, 
+               state: MsgState, 
+               path: MsgPath,
+               ):
         blue = np.array([[30, 144, 255, 255]])/255.
         red = np.array([[1., 0., 0., 1]])
         # initialize the drawing the first time update() is called
