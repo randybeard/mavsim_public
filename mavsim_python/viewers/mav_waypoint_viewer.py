@@ -3,16 +3,19 @@ mavsim_python: waypoint viewer (for chapter 11)
     - Beard & McLain, PUP, 2012
     - Update history:
         4/15/2019 - BGM
+        7/13/2023 - RWB
+        3/25/2024 - Carson Moon
 """
 import numpy as np
 import pyqtgraph.opengl as gl
 from viewers.draw_mav import DrawMav
 from viewers.draw_path import DrawPath
 from viewers.draw_waypoints import DrawWaypoints
+from time import time
 
 
 class MAVAndWaypointViewer:
-    def __init__(self, app):
+    def __init__(self, app, ts_refresh=1./30.):
         self.scale = 2000
         # initialize Qt gui application and window
         self.app = app  # initialize QT
@@ -35,6 +38,9 @@ class MAVAndWaypointViewer:
         self.mav_plot = []
         self.path_plot = []
         self.waypoint_plot = []
+        self.ts_refresh = ts_refresh
+        self.t = time()
+        self.t_next = self.t
 
     def update(self, state, path, waypoints):
         blue = np.array([[30, 144, 255, 255]])/255.
@@ -47,7 +53,11 @@ class MAVAndWaypointViewer:
             self.plot_initialized = True
         # else update drawing on all other calls to update()
         else:
-            self.mav_plot.update(state)
+            t = time()
+            if t-self.t_next > 0.0:
+                self.mav_plot.update(state)
+                self.t = t
+                self.t_next = t + self.ts_refresh
             if waypoints.flag_waypoints_changed:
                 self.waypoint_plot.update(waypoints)
                 waypoints.flag_waypoints_changed = False
