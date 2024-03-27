@@ -7,13 +7,64 @@
 #         3/26/2019 - RWB
 #         4/2/2020 - RWB
 #         3/30/2022 - RWB
-
+#         7/13/2023 - RWB
+#         3/27/2024 - RWB
 import numpy as np
 
 
 class DubinsParameters:
+    '''
+    Class that contains parameters for a Dubin's car path
 
-    def update(self, ps, chis, pe, chie, R):
+    Attributes
+    ----------
+        p_s : np.ndarray (3x1)
+            inertial position of start position, in meters
+        chi_s : float
+            course of start position in radians, measured from North
+        p_e : np.ndarray (3x1)
+            inertial position of end position, in meters
+        chi_e : float
+            course of end position in radians, measured from North
+        R : float
+            radius of start and end circles, from north
+        center_s : np.ndarray (3x1)
+            inertial center of start circle
+        dir_s : int 
+            direction of start circle: +1 CW, -1 CCW
+        center_e : np.ndarray (3x1)
+            inertial center of end circle
+        dir_e : int 
+            direction of end circle: +1 CW, -1 CCW
+        length : float
+            length of straight line segment
+        r1 : np.ndarray (3x1)
+            position on half plane for transition from start circle to straight-line
+        n1 : np.ndarray (3x1)
+            unit vector defining half plane for transition from start circle to straight-line, and from straight line to end circle
+        r2 : np.ndarray (3x1)
+            position on half plane for transition from straight line to end circle
+        r3 : np.ndarray (3x1)
+            position on half plane for end of dubins path
+        n3 : np.ndarray (3x1)
+            unit vector defining half plane for end of dubins path
+
+    Methods
+    ----------
+    update(ps, chis, pe, chie, R)
+        : create new Dubins path from start to end poses, with specified radius
+    compute_parameters()
+        : construct four dubins paths and pick the shortest and define all associated parameters.
+    compute_points()
+        : find equally spaced points along dubins path - for plotting and collision checking
+    '''
+
+    def update(self, 
+               ps: np.ndarray, # (3x1) 
+               chis: float, 
+               pe: np.ndarray, # (3x1)
+               chie: float, 
+               R: float):
          self.p_s = ps
          self.chi_s = chis
          self.p_e = pe
@@ -160,13 +211,19 @@ class DubinsParameters:
         return points
 
 
-def rotz(theta):
+def rotz(theta: float):
+    '''
+    returns rotation matrix for right handed passive rotation about z-axis
+    '''
     return np.array([[np.cos(theta), -np.sin(theta), 0],
                     [np.sin(theta), np.cos(theta), 0],
                     [0, 0, 1]])
 
 
-def mod(x):
+def mod(x: float):
+    '''
+    wrap x to be between 0 and 2*pi
+    '''
     while x < 0:
         x += 2*np.pi
     while x > 2*np.pi:
