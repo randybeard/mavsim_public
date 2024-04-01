@@ -1,24 +1,15 @@
 # rrt straight line path planner for mavsim_python
-#
-# mavsim_python
-#     - Beard & McLain, PUP, 2012
-#     - Last updated:
-#         4/3/2019 - Brady Moon
-#         4/11/2019 - RWB
-#         3/31/2020 - RWB
 import numpy as np
 from message_types.msg_waypoints import MsgWaypoints
-from viewers.planner_viewer import PlannerViewer
 
 class RRTStraightLine:
-    def __init__(self, app, show_planner=True):
+    def __init__(self):
         self.segment_length = 300 # standard length of path segments
-        self.show_planner = show_planner
-        if show_planner:
-            self.planner_viewer = PlannerViewer(app)
 
     def update(self, start_pose, end_pose, Va, world_map, radius):
         tree = MsgWaypoints()
+        waypoints = MsgWaypoints()
+        waypoints_not_smoothed = MsgWaypoints()
         #tree.type = 'straight_line'
         tree.type = 'fillet'
 
@@ -30,7 +21,8 @@ class RRTStraightLine:
         # find path with minimum cost to end_node
         # waypoints_not_smooth = find_minimum_path()
         # waypoints = smooth_path()
-        waypoints = MsgWaypoints()
+        self.waypoints_not_smoothed = waypoints_not_smoothed
+        self.tree = tree
         return waypoints
 
     def extend_tree(self, tree, end_pose, Va, world_map):

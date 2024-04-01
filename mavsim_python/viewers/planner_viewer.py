@@ -1,58 +1,67 @@
-# plan viewer for path planner for mavsim_python
-#
-# mavsim_python
-# 
+"""
+mavsim_python: world viewer (for chapter 12)
+    - Beard & McLain, PUP, 2012
+    - Update history:
+        4/15/2019 - RWB
+        3/30/2022 - RWB
+        7/13/2023 - RWB
+"""
 import numpy as np
-from message_types.msg_waypoints import MsgWaypoints
+#from message_types.msg_waypoints import MsgWaypoints
 from viewers.draw_waypoints import DrawWaypoints
 from viewers.draw_map import DrawMap
-from planning.dubins_parameters import DubinsParameters
+from planners.dubins_parameters import DubinsParameters
+#import pyqtgraph as pg
 import pyqtgraph.opengl as gl
 
 
 class PlannerViewer:
     def __init__(self, app):
+        self.scale = 2500
         # initialize Qt gui application and window
-        self.R = np.array([[0, 1, 0], [1, 0, 0], [0, 0, -1]])
-        scale = 2500
         self.app = app  # initialize QT
         self.window = gl.GLViewWidget()  # initialize the view object
         self.window.setWindowTitle('RRT Tree Viewer')
         self.window.setGeometry(500, 0, 500, 500)  # args: upper_left_x, upper_right_y, width, height
         grid = gl.GLGridItem() # make a grid to represent the ground
-        grid.scale(scale/20, scale/20, scale/20) # set the size of the grid (distance between each line)
+        grid.scale(self.scale/20, self.scale/20, self.scale/20) # set the size of the grid (distance between each line)
         self.window.addItem(grid) # add grid to viewer
         center = self.window.cameraPosition()
-        center.setX(500)
-        center.setY(500)
+        center.setX(1000)
+        center.setY(1000)
         center.setZ(0)
-        self.window.setCameraPosition(pos=center, distance=scale, elevation=50, azimuth=-90)
+        self.window.setCameraPosition(pos=center, 
+                                      distance=self.scale, 
+                                      elevation=50, 
+                                      azimuth=-90)
         self.window.setBackgroundColor('k')  # set background color to black
+        # self.window.resize(*(4000, 4000))  # not sure how to resize window
         self.window.show()  # display configured window
-        self.blue = np.array([[30, 144, 255, 255]])/255.
-        self.red = np.array([[204, 0, 0]])/255.
-        self.green = np.array([[0, 153, 51]])/255.
+        self.window.raise_()  # bring window to the front
+        self.R = np.array([[0, 1, 0], [1, 0, 0], [0, 0, -1]])
 
     def draw_tree_and_map(self, world_map, tree, waypoints, smoothed_waypoints,
-                           radius, dubins_path=None):
+                           radius, dubins_path=DubinsParameters()):
+        blue = np.array([[30, 144, 255, 255]])/255.
+        red = np.array([[204, 0, 0]])/255.
+        green = np.array([[0, 153, 51]])/255.
         self.window.clear()
         DrawMap(world_map, self.window)
         # draw things to the screen
-        R = np.array([[0, 1, 0], [1, 0, 0], [0, 0, -1]])
         for i in range(1, tree.num_waypoints):
             if dubins_path == None:
                 points = self.get_straight_line_points(tree, i)
             else:
                 points = self.get_dubins_points(tree,i,radius,dubins_path)
-            tree_color = np.tile(self.green, (points.shape[0], 1))
+            tree_color = np.tile(green, (points.shape[0], 1))
             tree_plot_object = gl.GLLinePlotItem(pos=points,
                                                 color=tree_color,
                                                 width=2,
                                                 antialias=True,
                                                 mode='line_strip')
             self.window.addItem(tree_plot_object)
-            DrawWaypoints(waypoints, radius, self.blue, self.window)
-            DrawWaypoints(smoothed_waypoints, radius, self.red, self.window)
+            DrawWaypoints(waypoints, radius, blue, self.window)
+            DrawWaypoints(smoothed_waypoints, radius, red, self.window)
 
     def get_straight_line_points(self, tree, i):
         points = self.R @ tree.ned

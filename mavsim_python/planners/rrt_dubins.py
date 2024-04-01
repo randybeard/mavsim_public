@@ -1,28 +1,20 @@
 # rrt dubins path planner for mavsim_python
-#
-# mavsim_python
-#     - Beard & McLain, PUP, 2012
-#     - Last updated:
-#         4/16/2019 - RWB
 import numpy as np
 from message_types.msg_waypoints import MsgWaypoints
-from planning.dubins_parameters import DubinsParameters
-from viewers.planner_viewer import PlannerViewer
+from planners.dubins_parameters import DubinsParameters
 
 
 class RRTDubins:
-    def __init__(self, app, show_planner=True):
+    def __init__(self):
         self.segment_length = 450  # standard length of path segments
         self.dubins_path = DubinsParameters()
-        # initialize Qt gui application and window
-        self.show_planner = show_planner
-        if show_planner:
-            self.planner_viewer = PlannerViewer(app)
 
     def update(self, start_pose, end_pose, Va, world_map, radius):
         self.segment_length = 4 * radius
         tree = MsgWaypoints()
         tree.type = 'dubins'
+        waypoints_not_smooth = MsgWaypoints()
+        waypoints = MsgWaypoints()        
 
         ##### TODO #####
         # add the start pose to the tree
@@ -32,10 +24,8 @@ class RRTDubins:
         # find path with minimum cost to end_node
         # waypoints_not_smooth = findMinimumPath()
         # waypoints = self.smoothPath()
-        waypoints_not_smooth = MsgWaypoints()
-        waypoints = MsgWaypoints()
-        if self.show_planner:
-            self.planner_viewer.draw_tree_and_map(world_map, tree, waypoints_not_smooth, waypoints, radius, self.dubins_path)
+        self.waypoint_not_smooth = waypoints_not_smooth
+        self.tree = tree
         return waypoints
 
     def extendTree(self, tree, end_pose, Va, world_map, radius):
