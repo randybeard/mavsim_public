@@ -23,7 +23,7 @@ class DrawWaypoints:
         self.waypoint_plot_object = gl.GLLinePlotItem(pos=points,
                                                       color=waypoint_color,
                                                       width=2,
-                                                      antialias=True,
+                                                      antialias=False,
                                                       mode='line_strip')
         self.waypoint_plot_object.setGLOptions('translucent')  # puts waypoint behind obstacles
         # ============= options include
