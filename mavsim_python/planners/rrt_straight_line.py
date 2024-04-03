@@ -49,58 +49,89 @@ def smooth_path(waypoints, world_map):
 
 def find_minimum_path(tree, end_pose):
     # find the lowest cost path to the end node
-
-    ##### TODO #####
     # find nodes that connect to end_node
     connecting_nodes = []
-    
+    for i in range(tree.num_waypoints):
+        if tree.connect_to_goal.item(i) == 1:
+            connecting_nodes.append(i)
     # find minimum cost last node
-    idx = 0
-
+    idx = np.argmin(tree.cost[connecting_nodes])
     # construct lowest cost path order
-    path = []  # last node that connects to end node
-    
+    path = [connecting_nodes[idx]]  # last node that connects to end node
+    parent_node = tree.parent.item(connecting_nodes[idx])
+    while parent_node >= 1:
+        path.insert(0, int(parent_node))
+        parent_node = tree.parent.item(int(parent_node))
+    path.insert(0, 0)
     # construct waypoint path
     waypoints = MsgWaypoints()
+    for i in path:
+        waypoints.add(column(tree.ned, i),
+                      tree.airspeed.item(i),
+                      np.inf,
+                      np.inf,
+                      np.inf,
+                      np.inf)
+    waypoints.add(end_pose,
+                  tree.airspeed[-1],
+                  np.inf,
+                  np.inf,
+                  np.inf,
+                  np.inf)
+    waypoints.type = tree.type
     return waypoints
 
 
 def random_pose(world_map, pd):
     # generate a random pose
-
-    ##### TODO #####
-    pn = 0
-    pe = 0
+    pn = world_map.city_width * np.random.rand()
+    pe = world_map.city_width * np.random.rand()
     pose = np.array([[pn], [pe], [pd]])
     return pose
 
 
 def distance(start_pose, end_pose):
     # compute distance between start and end pose
-
-    ##### TODO #####
-    d = 0
+    d = np.linalg.norm(start_pose - end_pose)
     return d
 
 
 def collision(start_pose, end_pose, world_map):
     # check to see of path from start_pose to end_pose colliding with map
-    
-    ###### TODO ######
-    collision_flag = None
+    collision_flag = False
+    points = points_along_path(start_pose, end_pose, 100)
+    for i in range(points.shape[1]):
+        if height_above_ground(world_map, column(points, i)) <= 0:
+            collision_flag = True
     return collision_flag
 
 
 def height_above_ground(world_map, point):
     # find the altitude of point above ground level
-    
-    ##### TODO #####
-    h_agl = 0
+    point_height = -point.item(2)
+    tmp = np.abs(point.item(0)-world_map.building_north)
+    d_n = np.min(tmp)
+    idx_n = np.argmin(tmp)
+    tmp = np.abs(point.item(1)-world_map.building_east)
+    d_e = np.min(tmp)
+    idx_e = np.argmin(tmp)
+    if (d_n<world_map.building_width) and (d_e<world_map.building_width):
+        map_height = world_map.building_height[idx_n, idx_e]
+    else:
+        map_height = 0
+    h_agl = point_height - map_height
     return h_agl
 
 def points_along_path(start_pose, end_pose, N):
     # returns points along path separated by Del
-    points = None
+    points = start_pose
+    q = (end_pose - start_pose)
+    L = np.linalg.norm(q)
+    q = q / L
+    w = start_pose
+    for i in range(1, N):
+        w = w + (L / N) * q
+        points = np.append(points, w, axis=1)
     return points
 
 

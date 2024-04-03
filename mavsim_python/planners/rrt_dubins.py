@@ -60,41 +60,66 @@ class RRTDubins:
 def findMinimumPath(tree, end_pose):
     # find the lowest cost path to the end node
 
-    ##### TODO #####
     # find nodes that connect to end_node
     connecting_nodes = []
-    
+    for i in range(tree.num_waypoints):
+        if tree.connect_to_goal.item(i) == 1:
+            connecting_nodes.append(i)
     # find minimum cost last node
-    idx = 0
-    
+    idx = np.argmin(tree.cost[connecting_nodes])
     # construct lowest cost path order
-    path = []
-
+    path = [connecting_nodes[idx]]  # last node that connects to end node
+    parent_node = tree.parent.item(connecting_nodes[idx])
+    while parent_node >= 1:
+        path.insert(0, int(parent_node))
+        parent_node = tree.parent.item(int(parent_node))
+    path.insert(0, 0)
     # construct waypoint path
     waypoints = MsgWaypoints()
-   
+    for i in path:
+        waypoints.add(column(tree.ned, i),
+                      tree.airspeed.item(i),
+                      tree.course.item(i),
+                      np.inf,
+                      np.inf,
+                      np.inf)
+    waypoints.add(end_pose[0:3],
+                  tree.airspeed[-1],
+                  end_pose.item(3),
+                  np.inf,
+                  np.inf,
+                  np.inf)
+    waypoints.type = tree.type
     return waypoints
 
 
 def distance(start_pose, end_pose):
     # compute distance between start and end pose
-    ##### TODO #####
-    d = 0
+    d = np.linalg.norm(start_pose[0:3] - end_pose[0:3])
     return d
 
 
 def heightAboveGround(world_map, point):
     # find the altitude of point above ground level
-    ###### TODO ######
-    h_agl = 0
+    point_height = -point.item(2)
+    tmp = np.abs(point.item(0)-world_map.building_north)
+    d_n = np.min(tmp)
+    idx_n = np.argmin(tmp)
+    tmp = np.abs(point.item(1)-world_map.building_east)
+    d_e = np.min(tmp)
+    idx_e = np.argmin(tmp)
+    if (d_n<world_map.building_width) and (d_e<world_map.building_width):
+        map_height = world_map.building_height[idx_n, idx_e]
+    else:
+        map_height = 0
+    h_agl = point_height - map_height
     return h_agl
 
 
 def randomPose(world_map, pd):
     # generate a random pose
-    ###### TODO ######
-    pn = 0
-    pe = 0
+    pn = world_map.city_width * np.random.rand()
+    pe = world_map.city_width * np.random.rand()
     chi = 0
     pose = np.array([[pn], [pe], [pd], [chi]])
     return pose
