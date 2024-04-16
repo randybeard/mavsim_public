@@ -21,9 +21,10 @@ from models.mav_dynamics_sensors import MavDynamics
 from models.wind_simulation import WindSimulation
 from controllers.autopilot import Autopilot
 #from controllers.lqr_with_rate_damping import Autopilot
-from estimators.observer import Observer
-#from estimators.observer_full import Observer
-from viewers.manage_viewers import Viewers
+#from estimators.observer import Observer
+from estimators.observer_full import Observer
+from viewers.view_manager import ViewManager
+import time
 
 #quitter = QuitListener()
 
@@ -32,7 +33,9 @@ wind = WindSimulation(SIM.ts_simulation)
 mav = MavDynamics(SIM.ts_simulation)
 autopilot = Autopilot(SIM.ts_simulation)
 observer = Observer(SIM.ts_simulation)
-viewers = Viewers(animation=True, data=True)
+viewers = ViewManager(mav=True, 
+                      data=True,
+                      video=False, video_name='chap8.mp4')
 
 # autopilot commands
 from message_types.msg_autopilot import MsgAutopilot
@@ -76,11 +79,10 @@ while sim_time < end_time:
     # -------- update viewer -------------
     viewers.update(
         sim_time,
-        mav.true_state,  # true states
-        estimated_state,  # estimated states
-        commanded_state,  # commanded states
-        delta,  # inputs to aircraft
-        None,  # measurements
+        true_state=mav.true_state,  # true states
+        estimated_state=estimated_state,  # estimated states        
+        commanded_state=commanded_state,  # commanded states
+        delta=delta, # inputs to MAV
     )
         
     # -------Check to Quit the Loop-------
@@ -89,6 +91,7 @@ while sim_time < end_time:
 
     # -------increment time-------------
     sim_time += SIM.ts_simulation
+    #time.sleep(0.001)  # make the sim run slower
 
 # close viewers
 viewers.close(dataplot_name="ch8_data_plot", 

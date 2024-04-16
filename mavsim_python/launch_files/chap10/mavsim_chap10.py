@@ -22,6 +22,8 @@ from estimators.observer_full import Observer
 #from estimators.observer import Observer
 from planners.path_follower import PathFollower
 from viewers.view_manager import ViewManager
+from message_types.msg_path import MsgPath
+import time
 
 # initialize elements of the architecture
 wind = WindSimulation(SIM.ts_simulation)
@@ -29,22 +31,34 @@ mav = MavDynamics(SIM.ts_simulation)
 autopilot = Autopilot(SIM.ts_simulation)
 observer = Observer(SIM.ts_simulation)
 path_follower = PathFollower()
-viewers = ViewManager(animation=True, data=True, path=True)
+viewers = ViewManager(path=True, 
+                      data=False,
+                      video=False, video_name='chap10.mp4')
 #quitter = QuitListener()
 
 # path definition
-from message_types.msg_path import MsgPath
-path = MsgPath()
-#path.type = 'line'
-path.type = 'orbit'
-if path.type == 'line':
-    path.line_origin = np.array([[0.0, 0.0, -100.0]]).T
-    path.line_direction = np.array([[0.5, 1.0, 0.0]]).T
-    path.line_direction = path.line_direction / np.linalg.norm(path.line_direction)
-elif path.type == 'orbit':
-    path.orbit_center = np.array([[0.0, 0.0, -100.0]]).T  # center of the orbit
-    path.orbit_radius = 300.0  # radius of the orbit
-    path.orbit_direction = 'CW'  # orbit direction: 'CW'==clockwise, 'CCW'==counter clockwise
+# path = MsgPath(
+#     type='line', 
+#     airspeed = 25,
+#     line_origin = np.array([[0.0, 0.0, -100.0]]).T,
+#     line_direction = np.array([[0.5, 1.0, 0.0]]).T,
+#     )
+path = MsgPath(
+    type='orbit', 
+    airspeed = 25,
+    orbit_center = np.array([[0.0, 0.0, -100.0]]).T,
+    orbit_radius = 200.0,
+    orbit_direction = 'CCW', # 'CCW',
+    )
+# path = MsgPath(
+#     type='helix', 
+#     airspeed = 25,
+#     orbit_center = np.array([[0.0, 0.0, -100.0]]).T,
+#     orbit_radius = 200.0,
+#     orbit_direction = 'CW', # 'CCW',
+#     helix_climb_angle=np.radians(1),
+#     helix_start_angle=np.radians(0),
+#     )
 
 # initialize the simulation time
 sim_time = SIM.start_time
@@ -71,11 +85,10 @@ while sim_time < end_time:
     # -------- update viewer -------------
     viewers.update(
         sim_time,
-        mav.true_state,  # true states
-        estimated_state,  # estimated states
-        commanded_state,  # commanded states
-        delta,  # inputs to aircraft
-        None,  # measurements
+        true_state=mav.true_state,  # true states
+        estimated_state=estimated_state,  # estimated states        
+        commanded_state=commanded_state,  # commanded states
+        delta=delta, # inputs to MAV
         path=path, # path
     )
         
@@ -85,6 +98,7 @@ while sim_time < end_time:
 
     # -------increment time-------------
     sim_time += SIM.ts_simulation
+    #time.sleep(0.001)  # make the sim run slower
 
 # close viewers
 viewers.close(dataplot_name="ch10_data_plot")

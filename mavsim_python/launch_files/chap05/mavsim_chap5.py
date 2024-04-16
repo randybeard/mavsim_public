@@ -19,14 +19,17 @@ from models.wind_simulation import WindSimulation
 from models.trim import compute_trim
 from models.compute_models import compute_model
 from tools.signals import Signals
-from viewers.manage_viewers import Viewers
+from viewers.view_manager import ViewManager
+import time
 
 #quitter = QuitListener()
 
 # initialize elements of the architecture
 wind = WindSimulation(SIM.ts_simulation)
 mav = MavDynamics(SIM.ts_simulation)
-viewers = viewers = Viewers(animation=True, data=True)
+viewers = ViewManager(mav=True, 
+                      data=True,
+                      video=False, video_name='chap5.mp4')
 
 # use compute_trim function to compute trim state and trim input
 Va = 25.
@@ -69,11 +72,8 @@ while sim_time < end_time:
     # -------update viewer-------------
     viewers.update(
         sim_time,
-        mav.true_state,  # true states
-        None,  # estimated states
-        None,  # commanded states
-        delta,  # inputs to aircraft
-        None,  # measurements
+        true_state=mav.true_state,  # true states
+        delta=delta,
     )
         
     # -------Check to Quit the Loop-------
@@ -82,7 +82,8 @@ while sim_time < end_time:
 
     # -------increment time-------------
     sim_time += SIM.ts_simulation
-
+    time.sleep(0.002) # slow down the simulation for visualization
+    
 viewers.close(dataplot_name="ch5_data_plot")
 
 

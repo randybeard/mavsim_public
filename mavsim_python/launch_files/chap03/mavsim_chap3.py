@@ -17,14 +17,17 @@ import numpy as np
 import parameters.simulation_parameters as SIM
 from message_types.msg_delta import MsgDelta
 from models.mav_dynamics import MavDynamics
-from viewers.manage_viewers import Viewers
+from viewers.view_manager import ViewManager
+import time
 
 #quitter = QuitListener()
     
 # initialize elements of the architecture
 mav = MavDynamics(SIM.ts_simulation)
 delta = MsgDelta()
-viewers = Viewers(animation=True, data=True)
+viewers = ViewManager(mav=True, 
+                      data=True,
+                      video=False, video_name='chap3.mp4')
 
 # initialize the simulation time
 sim_time = SIM.start_time
@@ -48,15 +51,12 @@ while sim_time < end_time:
     # ------- update viewers -------------
     viewers.update(
         sim_time,
-        mav.true_state,  # true states
-        None,  # estimated states
-        None,  # commanded states
-        None,  # inputs to aircraft
-        None,  # measurements
+        true_state=mav.true_state,  # true states
     )
 
     # ------- increment time -------------
     sim_time += SIM.ts_simulation
+    time.sleep(0.002) # slow down the simulation for visualization
 
     # -------Check to Quit the Loop-------
     # if quitter.check_quit():

@@ -18,14 +18,18 @@ from tools.signals import Signals
 from models.mav_dynamics_sensors import MavDynamics
 from models.wind_simulation import WindSimulation
 from controllers.autopilot import Autopilot
-from viewers.manage_viewers import Viewers
+from viewers.view_manager import ViewManager
+import time
 
 
 # initialize elements of the architecture
 wind = WindSimulation(SIM.ts_simulation)
 mav = MavDynamics(SIM.ts_simulation)
 autopilot = Autopilot(SIM.ts_simulation)
-viewers = viewers = Viewers(animation=True, data=True, sensors=True)
+viewers = ViewManager(mav=True, 
+                      data=True,
+                      sensors=True,
+                      video=False, video_name='chap7.mp4')
 
 # autopilot commands
 from message_types.msg_autopilot import MsgAutopilot
@@ -68,11 +72,10 @@ while sim_time < end_time:
     # -------update viewer-------------
     viewers.update(
         sim_time,
-        mav.true_state,  # true states
-        None,  # estimated states
-        commanded_state,  # commanded states
-        delta,  # inputs to aircraft
-        measurements,  # measurements
+        true_state=mav.true_state,  # true states
+        commanded_state=commanded_state,  # commanded states
+        delta=delta, # inputs to MAV
+        measurements=measurements,  # measurements
     )
         
     # # -------Check to Quit the Loop-------
@@ -81,7 +84,8 @@ while sim_time < end_time:
 
     # -------increment time-------------
     sim_time += SIM.ts_simulation
-
+    time.sleep(0.002) # slow down the simulation for visualization
+    
 viewers.close(dataplot_name="ch7_data_plot", 
               sensorplot_name="ch7_sensor_plot")
 

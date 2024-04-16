@@ -17,7 +17,8 @@ import parameters.simulation_parameters as SIM
 from models.mav_dynamics_control import MavDynamics
 from models.wind_simulation import WindSimulation
 from message_types.msg_delta import MsgDelta
-from viewers.manage_viewers import Viewers
+from viewers.view_manager import ViewManager
+import time
 
 #quitter = QuitListener()
 
@@ -25,7 +26,9 @@ from viewers.manage_viewers import Viewers
 wind = WindSimulation(SIM.ts_simulation)
 mav = MavDynamics(SIM.ts_simulation)
 delta = MsgDelta()
-viewers = viewers = Viewers(animation=True, data=True)
+viewers = ViewManager(mav=True, 
+                      data=True,
+                      video=False, video_name='chap4.mp4')
 
 # initialize the simulation time
 sim_time = SIM.start_time
@@ -48,11 +51,8 @@ while sim_time < end_time:
     # -------update viewer-------------
     viewers.update(
         sim_time,
-        mav.true_state,  # true states
-        None,  # estimated states
-        None,  # commanded states
-        delta,  # inputs to aircraft
-        None,  # measurements
+        true_state=mav.true_state,  # true states
+        delta=delta,
     )
         
     # # -------Check to Quit the Loop-------
@@ -61,5 +61,6 @@ while sim_time < end_time:
 
     # -------increment time-------------
     sim_time += SIM.ts_simulation
+    time.sleep(0.002) # slow down the simulation for visualization
 
 viewers.close(dataplot_name="ch4_data_plot")

@@ -24,6 +24,7 @@ from planners.path_follower import PathFollower
 # from chap11.path_manager_cycle import PathManager
 from planners.path_manager import PathManager
 from viewers.view_manager import ViewManager
+import time
 
 # initialize elements of the architecture
 wind = WindSimulation(SIM.ts_simulation)
@@ -32,15 +33,17 @@ autopilot = Autopilot(SIM.ts_simulation)
 observer = Observer(SIM.ts_simulation)
 path_follower = PathFollower()
 path_manager = PathManager()
-viewers = ViewManager(animation=True, data=False, waypoint=True)
+viewers = ViewManager(waypoint=True, 
+                      data=False,
+                      video=False, video_name='chap11.mp4')
 #quitter = QuitListener()
 
 # waypoint definition
 from message_types.msg_waypoints import MsgWaypoints
 waypoints = MsgWaypoints()
-waypoints.type = 'straight_line'
+#waypoints.type = 'straight_line'
 #waypoints.type = 'fillet'
-#waypoints.type = 'dubins'
+waypoints.type = 'dubins'
 Va = PLAN.Va0
 waypoints.add(np.array([[0, 0, -100]]).T, Va, np.radians(0), np.inf, 0, 0)
 waypoints.add(np.array([[1000, 0, -100]]).T, Va, np.radians(45), np.inf, 0, 0)
@@ -49,7 +52,7 @@ waypoints.add(np.array([[1000, 1000, -100]]).T, Va, np.radians(-135), np.inf, 0,
 
 # initialize the simulation time
 sim_time = SIM.start_time
-end_time = 200
+end_time = 300
 
 # main simulation loop
 print("Press 'Esc' to exit...")
@@ -60,7 +63,7 @@ while sim_time < end_time:
     # estimated_state = mav.true_state  # uses true states in the control
 
     # -------path manager-------------
-    path = path_manager.update(waypoints, PLAN.R_min, estimated_state)
+    path = path_manager.update(waypoints, estimated_state, PLAN.R_min)
 
     # -------path follower-------------
     autopilot_commands = path_follower.update(path, estimated_state)
@@ -76,9 +79,9 @@ while sim_time < end_time:
     viewers.update(
         sim_time,
         true_state=mav.true_state,  # true states
-        estimated_state=estimated_state,  # estimated states
+        estimated_state=estimated_state,  # estimated states        
         commanded_state=commanded_state,  # commanded states
-        delta=delta,  # inputs to aircraft
+        delta=delta, # inputs to MAV
         path=path, # path
         waypoints=waypoints, # waypoints
     )

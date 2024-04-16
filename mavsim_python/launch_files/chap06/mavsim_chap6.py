@@ -21,7 +21,8 @@ from models.wind_simulation import WindSimulation
 from controllers.autopilot import Autopilot
 #from controllers.autopilot_tecs import Autopilot
 #from controllers.lqr_with_rate_damping import Autopilot
-from viewers.manage_viewers import Viewers
+from viewers.view_manager import ViewManager
+import time
 
 #quitter = QuitListener()
 
@@ -29,7 +30,9 @@ from viewers.manage_viewers import Viewers
 wind = WindSimulation(SIM.ts_simulation)
 mav = MavDynamics(SIM.ts_simulation)
 autopilot = Autopilot(SIM.ts_simulation)
-viewers = viewers = Viewers(animation=True, data=True)
+viewers = ViewManager(mav=True, 
+                      data=True,
+                      video=False, video_name='chap6.mp4')
 
 # autopilot commands
 from message_types.msg_autopilot import MsgAutopilot
@@ -49,7 +52,7 @@ course_command = Signals(dc_offset=np.radians(180),
 
 # initialize the simulation time
 sim_time = SIM.start_time
-end_time = 100
+end_time = 300
 
 # main simulation loop
 print("Press 'Esc' to exit...")
@@ -71,11 +74,9 @@ while sim_time < end_time:
     # ------- update viewers -------
     viewers.update(
         sim_time,
-        mav.true_state,  # true states
-        None,  # estimated states
-        commanded_state,  # commanded states
-        delta,  # inputs to aircraft
-        None,  # measurements
+        true_state=mav.true_state,  # true states
+        commanded_state=commanded_state,  # commanded states
+        delta=delta, # inputs to MAV
     )
        
     # -------Check to Quit the Loop-------
@@ -84,6 +85,7 @@ while sim_time < end_time:
 
     # -------increment time-------------
     sim_time += SIM.ts_simulation
+    time.sleep(0.002) # slow down the simulation for visualization
 
 viewers.close(dataplot_name="ch6_data_plot")
 
